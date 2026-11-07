@@ -527,6 +527,62 @@ if (!hasGsap) {
     });
   }
 
+  /* ---- Phones: touch + motion-sensor versions of the hover effects ---- */
+  if (isTouch && !reduceMotion) {
+    const jelly = el => gsap.timeline()
+      .to(el, { scaleY: .76, scaleX: 1.18, transformOrigin: "50% 100%", duration: .1, ease: "power2.out", overwrite: "auto" })
+      .to(el, { scaleY: 1, scaleX: 1, duration: .85, ease: "elastic.out(1.2, .3)" });
+    const press = el => gsap.fromTo(el, { scale: .9 }, { scale: 1, duration: .7, ease: "elastic.out(1, .4)", overwrite: "auto" });
+
+    // tap a letter → jelly; and one jelly wave across the name once the intro has played
+    [...heroChars.flat(), ...contactChars.flat()].forEach(ch => ch.addEventListener("pointerdown", () => jelly(ch)));
+    gsap.delayedCall(7.4, () => heroChars.flat().forEach((ch, i) => gsap.delayedCall(i * .055, () => jelly(ch))));
+
+    // tap buttons, tags and tiles → press-in spring
+    $$(".btn, .pills span, .contact__links a, .resume, .email, .mode").forEach(el => el.addEventListener("pointerdown", () => press(el)));
+
+    // logo tiles: tilt toward the finger, glow in brand colour, spring back
+    tiles.forEach(t => {
+      const tilt = e => {
+        const r = t.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+        gsap.to(t, { rotationY: x * 34, rotationX: -y * 34, scale: 1.06, transformPerspective: 500, duration: .35, ease: "power3.out" });
+      };
+      t.addEventListener("pointerdown", e => { t.classList.add("is-touch"); tilt(e); });
+      const release = () => { gsap.to(t, { rotationX: 0, rotationY: 0, scale: 1, duration: 1, ease: "elastic.out(1, .35)" }); setTimeout(() => t.classList.remove("is-touch"), 450); };
+      t.addEventListener("pointerup", release); t.addEventListener("pointercancel", release); t.addEventListener("pointerleave", release);
+    });
+
+    // motion sensor: tilting the phone tilts the photo (with moving glare), the chips, and the cards
+    const vf = $("#vfInner");
+    const tilters = [{ el: vf, k: 1 }, ...$$(".ch-card, .vid").map(el => ({ el, k: .45 }))].map(({ el, k }) => ({
+      k, rx: gsap.quickTo(el, "rotationX", { duration: .9, ease: "power3" }), ry: gsap.quickTo(el, "rotationY", { duration: .9, ease: "power3" }),
+    }));
+    $$(".ch-card, .vid").forEach(el => gsap.set(el, { transformPerspective: 1000 }));
+    const chipX = $$(".chip").map(c => ({ x: gsap.quickTo(c, "x", { duration: 1, ease: "power3" }), d: +c.dataset.depth || 1 }));
+    let base = null, gotSensor = false;
+    const onTilt = e => {
+      if (e.gamma == null || e.beta == null) return;
+      gotSensor = true;
+      if (!base) base = { b: e.beta, g: e.gamma };
+      base.b += (e.beta - base.b) * .015; base.g += (e.gamma - base.g) * .015; // slowly re-centre to however the phone is held
+      const x = gsap.utils.clamp(-1, 1, (e.gamma - base.g) / 22), y = gsap.utils.clamp(-1, 1, (e.beta - base.b) / 22);
+      tilters.forEach(s => { s.ry(x * 16 * s.k); s.rx(-y * 12 * s.k); });
+      chipX.forEach(c => c.x(x * 22 * c.d));
+      vf.style.setProperty("--sx", 50 + x * 45 + "%"); vf.style.setProperty("--sy", 30 + y * 45 + "%");
+    };
+    // Android sends motion data straight away; iPhone only after the visitor allows it on their first tap
+    window.addEventListener("deviceorientation", onTilt);
+    if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
+      window.addEventListener("touchend", () => { DeviceOrientationEvent.requestPermission().catch(() => {}); }, { once: true });
+    }
+    // no motion sensor? keep the photo gently swaying in 3D so it still feels alive
+    gsap.delayedCall(8, () => {
+      if (gotSensor) return;
+      gsap.to(vf, { rotationY: 9, rotationX: -5, duration: 3.2, ease: "sine.inOut", yoyo: true, repeat: -1 });
+      gsap.to(vf, { "--sx": "80%", "--sy": "60%", duration: 3.2, ease: "sine.inOut", yoyo: true, repeat: -1 });
+    });
+  }
+
   window.addEventListener("load", () => ScrollTrigger.refresh());
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
 }
