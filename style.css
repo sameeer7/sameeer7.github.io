@@ -588,3 +588,10 @@ html[data-mode="cut"] .swap__b { transform: translateY(0); opacity: 1; }
 /* phones: tapped logo tile glows like the desktop hover */
 .logo.is-touch::before, .logo.is-touch::after { opacity: 1; }
 .hero__title .ch, .contact__big .ch { -webkit-tap-highlight-color: transparent; }
+
+/* nav: photo next to the MS. logo */
+.nav__logo { display: inline-flex; align-items: center; gap: 10px; }
+.nav__avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent); transition: border-color .5s, box-shadow .5s, transform .5s var(--ease); }
+.nav__logo:hover .nav__avatar { transform: rotate(-8deg) scale(1.08); }
+@media (max-width: 760px) { .nav__avatar { width: 32px; height: 32px; } .nav__logo { gap: 8px; } }
+.nav__mark { font-weight: inherit; }
