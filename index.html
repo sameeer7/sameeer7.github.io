@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en" data-mode="code">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mohamad Sameer — Java Backend Developer & Video Editor</title>
+  <meta name="description" content="Mohamad Sameer — Java Spring Boot backend developer and video editor. I build reliable APIs and integrations, and I edit Shorts, Reels and YouTube videos." />
+  <meta name="theme-color" content="#07080c" />
+  <meta property="og:title" content="Mohamad Sameer — I build backends. I cut stories." />
+  <meta property="og:description" content="Java Backend Developer (Spring Boot, GraphQL, RabbitMQ, PostgreSQL) and Video Editor / Content Creator." />
+  <meta property="og:image" content="assets/sameer.jpg" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2307080c'/><text x='50' y='68' font-size='52' font-family='Arial Black,Arial' font-weight='900' text-anchor='middle' fill='%235b8cff'>MS</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============ PRELOADER ============ -->
+  <div class="loader" id="loader">
+    <div class="loader__top">
+      <span class="mono">Mohamad Sameer</span>
+      <span class="mono">Portfolio © 2026</span>
+    </div>
+    <div class="loader__name" aria-hidden="true">
+      <span>S</span><span>A</span><span>M</span><span>E</span><span>E</span><span>R</span>
+    </div>
+    <p class="loader__role mono" aria-hidden="true"><span>Java Backend Developer</span><span>Video Editor</span></p>
+    <div class="loader__bottom">
+      <div class="loader__bar"><i id="loaderBar"></i></div>
+      <span class="loader__count mono" id="loaderCount">000</span>
+    </div>
+    <div class="loader__curtain"></div>
+  </div>
+
+  <!-- ============ CURSOR ============ -->
+  <div class="cursor" id="cursor"><span class="cursor__label" id="cursorLabel"></span></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <!-- background noise + grid -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="spotlight" id="spotlight" aria-hidden="true"></div>
+
+  <!-- scroll progress + mode-switch wipe -->
+  <div class="progress" aria-hidden="true"><i id="progressBar"></i></div>
+  <div class="wipe" id="wipe" aria-hidden="true"><span class="wipe__label" id="wipeLabel"></span></div>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="nav">
+    <a href="#top" class="nav__logo" data-cursor="Home">MS<span>.</span></a>
+    <nav class="nav__links">
+      <a href="#about"><span data-text="About">About</span></a>
+      <a href="#work"><span data-text="Work">Work</span></a>
+      <a href="#edit"><span data-text="Edit Bay">Edit Bay</span></a>
+      <a href="#skills"><span data-text="Stack">Stack</span></a>
+      <a href="#contact"><span data-text="Contact">Contact</span></a>
+    </nav>
+    <button class="mode" id="modeToggle" aria-label="Switch between engineer and editor mode" data-cursor="Switch">
+      <span class="mode__opt mode__opt--code">&lt;/&gt; Code</span>
+      <span class="mode__opt mode__opt--cut">✂ Cut</span>
+      <span class="mode__pill"></span>
+    </button>
+    <button class="burger" id="burger" aria-label="Open menu"><span></span><span></span></button>
+  </header>
+
+  <div class="menu" id="menu">
+    <a href="#about">About</a><a href="#work">Work</a><a href="#edit">Edit Bay</a><a href="#skills">Stack</a><a href="#contact">Contact</a>
+  </div>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="hero__meta mono">
+        <span><i class="dot"></i> Open to work · Immediate joiner</span>
+        <span>Hyderabad, India</span>
+      </div>
+
+      <div class="hero__grid">
+        <div class="hero__left">
+          <h1 class="hero__title" aria-label="Mohamad Sameer">
+            <span class="line"><span class="split">Mohamad</span></span>
+            <span class="line"><span class="split outline">Sameer</span></span>
+          </h1>
+          <div class="hero__intro">
+          <p class="hero__lead">
+            I <span class="swap"><span class="swap__a">build backends</span><span class="swap__b">cut stories</span></span>
+            that people can rely on.
+          </p>
+          <p class="hero__sub">
+            <b>Java Backend Developer</b> — Spring Boot, GraphQL, RabbitMQ, PostgreSQL.<br />
+            <b>Video Editor & Creator</b> — Shorts, Reels and YouTube episodes.
+          </p>
+          <div class="hero__ctas">
+            <a href="#work" class="btn btn--primary magnetic" data-cursor="Go">See my work <span>↘</span></a>
+            <a href="#contact" class="btn btn--ghost magnetic" data-cursor="Hi!">Hire me</a>
+          </div>
+          </div>
+        </div>
+
+        <div class="viewfinder" id="viewfinder">
+          <div class="viewfinder__inner" id="vfInner">
+            <div class="viewfinder__img"><img src="assets/sameer.jpg" alt="Portrait of Mohamad Sameer" /></div>
+            <div class="viewfinder__shine"></div>
+            <div class="vf-corner vf-tl"></div><div class="vf-corner vf-tr"></div>
+            <div class="vf-corner vf-bl"></div><div class="vf-corner vf-br"></div>
+            <div class="vf-tag"><b>Sameer</b><span class="mono">Backend · Editor</span></div>
+          </div>
+          <div class="chip chip--1 mono" data-depth="1.4"><img src="assets/logos/springboot.svg" alt="" />Spring Boot</div>
+          <div class="chip chip--2 mono" data-depth="2"><img src="assets/logos/rabbitmq.svg" alt="" />RabbitMQ</div>
+          <div class="chip chip--3 mono" data-depth="1.7"><img src="assets/logos/youtube.svg" alt="" />Shorts &amp; Reels</div>
+          <div class="chip chip--4 mono" data-depth="1.2"><img src="assets/logos/postgresql.svg" alt="" />PostgreSQL</div>
+        </div>
+      </div>
+
+      <div class="hero__scroll mono"><span>Scroll</span><i></i></div>
+    </section>
+
+    <!-- ============ MARQUEE ============ -->
+    <section class="marquee" aria-label="Skills ticker">
+      <div class="marquee__track" id="marquee1">
+        <span class="mq"><img src="assets/logos/java.svg" alt="" />Java</span><em>✦</em><span class="mq"><img src="assets/logos/springboot.svg" alt="" />Spring Boot</span><em>✦</em><span class="mq"><img src="assets/logos/graphql.svg" alt="" />GraphQL</span><em>✦</em><span class="mq"><img src="assets/logos/rabbitmq.svg" alt="" />RabbitMQ</span><em>✦</em><span class="mq"><img src="assets/logos/postgresql.svg" alt="" />PostgreSQL</span><em>✦</em><span class="mq"><img src="assets/logos/redis.svg" alt="" />Redis</span><em>✦</em><span class="mq"><img src="assets/logos/docker.svg" alt="" />Docker</span><em>✦</em><span class="mq"><img src="assets/logos/git.svg" alt="" />Git</span><em>✦</em>
+      </div>
+      <div class="marquee__track marquee__track--rev" id="marquee2">
+        <span>Shorts</span><em>●</em><span>Reels</span><em>●</em><span>Jump Cuts</span><em>●</em><span>Keyframes</span><em>●</em><span>Subtitles</span><em>●</em><span>Sound Design</span><em>●</em><span>Thumbnails</span><em>●</em><span>Voice-over</span><em>●</em>
+      </div>
+    </section>
+
+    <!-- ============ SHOWREEL ============ -->
+    <section class="reel" id="reel">
+      <div class="reel__head">
+        <p class="eyebrow mono">Showreel — Begin With Sam channel reel</p>
+        <p class="mono reel__meta">16:9 · 1280×720 · 00:15</p>
+      </div>
+      <div class="reel__frame" id="reelFrame" data-cursor="Sound">
+        <video id="reelVideo" src="assets/showreel.mp4" poster="assets/showreel-poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
+        <div class="reel__bar"><i id="reelProgress"></i></div>
+        <button class="reel__sound mono" id="reelSound" aria-label="Turn sound on">🔇 Tap for sound</button>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="about section" id="about">
+      <p class="eyebrow mono">01 — About</p>
+      <p class="about__text reveal-words">
+        I'm Sameer. A mechanical engineer who fell in love with code. I spent 1.5 years building Spring Boot services for retail and POS platforms — APIs, client integrations and production data fixes. After work, I run my own YouTube channel, where I write, voice, edit and publish every video myself. Two crafts, one habit: <span class="hl">attention to detail.</span>
+      </p>
+
+      <div class="stats">
+        <div class="stat"><span class="stat__num" data-count="1.5" data-decimals="1">0</span><span class="stat__suf">yrs</span><p>Backend experience at CW Suite</p></div>
+        <div class="stat"><span class="stat__num" data-count="3">0</span><span class="stat__suf">live</span><p>Client integrations shipped end to end</p></div>
+        <div class="stat"><span class="stat__num" data-count="100">0</span><span class="stat__suf">/day</span><p>Orders synced by my batch jobs (80–100)</p></div>
+        <div class="stat"><span class="stat__num" data-count="7">0</span><span class="stat__suf">steps</span><p>Video pipeline I run solo, script to publish</p></div>
+      </div>
+    </section>
+
+    <!-- ============ TWO WORLDS ============ -->
+    <section class="worlds section">
+      <p class="eyebrow mono">02 — Two worlds, one person</p>
+      <h2 class="h2 split-up">Logic by day. <span class="accent-cut">Rhythm</span> by night.</h2>
+
+      <div class="worlds__grid">
+        <!-- Terminal -->
+        <div class="panel terminal" data-cursor="Code">
+          <div class="panel__bar"><i></i><i></i><i></i><span class="mono">OrderConsumer.java</span></div>
+          <pre class="terminal__code mono"><code id="typeCode"></code><span class="caret"></span></pre>
+          <div class="terminal__out mono" id="termOut">
+            <span>▸ Started Application in 3.21s</span>
+            <span>▸ Listening on queue: shopify.orders</span>
+            <span class="ok">✔ Order #1042 created — duplicate skipped</span>
+          </div>
+        </div>
+
+        <!-- Mini timeline -->
+        <div class="panel editor" data-cursor="Cut">
+          <div class="panel__bar"><i></i><i></i><i></i><span class="mono">BeginWithSam_Ep12.prproj</span></div>
+          <div class="editor__preview">
+            <div class="editor__frame">
+              <video class="editor__video" src="assets/videos/bws-intro.mp4" poster="assets/thumbs/bws-intro.jpg" muted loop playsinline autoplay preload="metadata"></video>
+              <span class="editor__caption" id="caption">Let's learn something new!</span>
+            </div>
+          </div>
+          <div class="editor__tracks">
+            <div class="trk"><b class="mono">V2</b><div class="lane"><i class="clip c-txt" style="left:8%;width:22%">TEXT</i><i class="clip c-txt" style="left:55%;width:18%">TITLE</i></div></div>
+            <div class="trk"><b class="mono">V1</b><div class="lane"><i class="clip c-vid" style="left:0;width:34%">Hook</i><i class="clip c-vid" style="left:35%;width:30%">Story</i><i class="clip c-vid" style="left:66%;width:34%">Outro</i></div></div>
+            <div class="trk"><b class="mono">A1</b><div class="lane"><i class="clip c-aud wave" style="left:0;width:100%"></i></div></div>
+            <div class="trk"><b class="mono">SFX</b><div class="lane"><i class="clip c-sfx" style="left:12%;width:6%"></i><i class="clip c-sfx" style="left:34%;width:5%"></i><i class="clip c-sfx" style="left:64%;width:7%"></i><i class="clip c-sfx" style="left:88%;width:5%"></i></div></div>
+            <div class="playhead" id="miniPlayhead"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EXPERIENCE ============ -->
+    <section class="exp section" id="experience">
+      <p class="eyebrow mono">03 — Experience</p>
+      <h2 class="h2 split-up">Where I've shipped.</h2>
+
+      <div class="timeline">
+        <div class="timeline__line"><i id="tlFill"></i></div>
+
+        <article class="tl-item">
+          <div class="tl-item__dot"></div>
+          <div class="tl-item__date mono">May 2025 — Oct 2026</div>
+          <div class="tl-item__card">
+            <h3>Associate Software Engineer (Backend) <span>· CW Suite</span></h3>
+            <ul>
+              <li>Built and maintained Spring Boot services for retail &amp; POS systems — order processing and inventory.</li>
+              <li>Developed GraphQL APIs and integrated third-party REST APIs with validation, central exception handling and logging.</li>
+              <li>Implemented RabbitMQ producers &amp; consumers to process orders asynchronously.</li>
+              <li>Delivered 3 client integrations end to end.</li>
+            </ul>
+            <div class="tags"><span>Spring Boot</span><span>GraphQL</span><span>RabbitMQ</span><span>PostgreSQL</span></div>
+          </div>
+        </article>
+
+        <article class="tl-item">
+          <div class="tl-item__dot"></div>
+          <div class="tl-item__date mono">Data Integrity Team · CW Suite</div>
+          <div class="tl-item__card">
+            <h3>Data Integrity Engineer <span>· 3-member team</span></h3>
+            <ul>
+              <li>Selected after one year in backend to join a team formed to fix rising production data issues.</li>
+              <li>Diagnosed integration sync failures (unmatched Nukkad barcodes) and corrected all affected orders.</li>
+              <li>Found and fixed orders with wrong or missing tax using SQL &amp; PL/pgSQL scripts.</li>
+              <li>Reported root causes to frontend &amp; backend teams so issues were fixed at the source.</li>
+            </ul>
+            <div class="tags"><span>SQL</span><span>PL/pgSQL</span><span>Root-cause analysis</span></div>
+          </div>
+        </article>
+
+        <article class="tl-item">
+          <div class="tl-item__dot"></div>
+          <div class="tl-item__date mono">2026 — Present</div>
+          <div class="tl-item__card tl-item__card--cut">
+            <h3>Creator &amp; Editor <span>· Begin With Sam</span></h3>
+            <ul>
+              <li>Animated educational videos for kids &amp; parents with a recurring cast — Sam, Rosy and Coco.</li>
+              <li>Full solo pipeline: script, visuals, voice-over, music, SFX, edit, subtitles, thumbnail, publish.</li>
+              <li>Use YouTube analytics (views, watch time, retention) to improve hooks and thumbnails.</li>
+            </ul>
+            <div class="tags"><span>CapCut</span><span>InShot</span><span>ElevenLabs</span><span>Google Flow</span></div>
+          </div>
+        </article>
+
+        <article class="tl-item">
+          <div class="tl-item__dot"></div>
+          <div class="tl-item__date mono">Sep 2024 — Feb 2025</div>
+          <div class="tl-item__card">
+            <h3>Software Development Intern <span>· People Tech Group</span></h3>
+            <ul><li>Feature development and bug fixes in Java and C++ projects, tracked in JIRA.</li></ul>
+            <div class="tags"><span>Java</span><span>C++</span><span>JIRA</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ WORK (horizontal) ============ -->
+    <section class="work" id="work">
+      <div class="work__pin">
+        <div class="work__head">
+          <p class="eyebrow mono">04 — Selected work</p>
+          <h2 class="h2">Integrations that<br />run in production.</h2>
+          <p class="work__hint mono">Scroll → </p>
+        </div>
+
+        <div class="work__track" id="workTrack">
+
+          <article class="case" data-cursor="View">
+            <div class="case__num mono">01 / 03</div>
+            <div class="case__client mono">Kamal Watches</div>
+            <h3 class="case__title">Shopify ⇄ CW Suite</h3>
+            <p>Two-way product sync, one-way inventory sync, and a queue-based pipeline that turns Shopify order webhooks into CW Suite orders — with customer, payment and tax data.</p>
+            <svg class="flow" viewBox="0 0 420 120" aria-label="Shopify webhook to RabbitMQ to CW Suite flow">
+              <g class="flow__node"><rect x="4" y="40" width="96" height="40" rx="10"/><image href="assets/logos/shopify.svg" x="13" y="51" width="18" height="18"/><text class="l" x="36" y="64.5">Shopify</text></g>
+              <g class="flow__node flow__node--q"><rect x="162" y="40" width="96" height="40" rx="10"/><image href="assets/logos/rabbitmq.svg" x="170" y="52" width="16" height="16"/><text class="l" x="191" y="64.5">RabbitMQ</text></g>
+              <g class="flow__node"><rect x="320" y="40" width="96" height="40" rx="10"/><text x="368" y="65">CW Suite</text></g>
+              <path class="flow__path" d="M100 60 H162"/><path class="flow__path" d="M258 60 H320"/>
+              <text class="flow__lbl" x="131" y="34">webhook</text><text class="flow__lbl" x="289" y="34">consume</text>
+              <circle class="flow__packet" r="5"><animateMotion dur="2.2s" repeatCount="indefinite" path="M100 60 H162 M258 60 H320"/></circle>
+            </svg>
+            <div class="tags"><span>Webhooks</span><span>RabbitMQ</span><span>REST</span></div>
+          </article>
+
+          <article class="case" data-cursor="View">
+            <div class="case__num mono">02 / 03</div>
+            <div class="case__client mono">Indian Sweet House</div>
+            <h3 class="case__title">Reelo Loyalty &amp; Coupons</h3>
+            <p>Loyalty points and coupons inside the POS with OTP-based customer login. POS orders are published as JSON messages and consumed to create orders; coupons are applied via pricing rules.</p>
+            <svg class="flow" viewBox="0 0 420 120" aria-label="POS to queue to Reelo flow">
+              <g class="flow__node"><rect x="4" y="40" width="96" height="40" rx="10"/><text x="52" y="65">POS</text></g>
+              <g class="flow__node flow__node--q"><rect x="162" y="40" width="96" height="40" rx="10"/><image href="assets/logos/rabbitmq.svg" x="176" y="52" width="16" height="16"/><text class="l" x="198" y="64.5">Queue</text></g>
+              <g class="flow__node"><rect x="320" y="40" width="96" height="40" rx="10"/><text x="368" y="65">Reelo</text></g>
+              <path class="flow__path" d="M100 60 H162"/><path class="flow__path" d="M258 60 H320"/>
+              <text class="flow__lbl" x="131" y="34">JSON</text><text class="flow__lbl" x="289" y="34">points</text>
+              <circle class="flow__packet" r="5"><animateMotion dur="2.6s" repeatCount="indefinite" path="M100 60 H162 M258 60 H320"/></circle>
+            </svg>
+            <div class="tags"><span>OTP Auth</span><span>Pricing Rules</span><span>JSON</span></div>
+          </article>
+
+          <article class="case" data-cursor="View">
+            <div class="case__num mono">03 / 03</div>
+            <div class="case__client mono">Dadu's Sweets</div>
+            <h3 class="case__title">Nukkad POS Batch Sync</h3>
+            <p>Twice-daily scheduled jobs (11 AM &amp; 12 AM) pull 80–100 orders a day for two airport business units. Idempotent inserts keyed on source order ID mean zero duplicates. Plus monthly Sales vs Collection reports.</p>
+            <svg class="flow" viewBox="0 0 420 120" aria-label="Nukkad API batch job flow">
+              <g class="flow__node"><rect x="4" y="40" width="96" height="40" rx="10"/><text x="52" y="65">Nukkad API</text></g>
+              <g class="flow__node flow__node--q"><rect x="162" y="40" width="96" height="40" rx="10"/><text x="210" y="65">⏱ Cron Job</text></g>
+              <g class="flow__node"><rect x="320" y="40" width="96" height="40" rx="10"/><image href="assets/logos/postgresql.svg" x="326" y="52" width="16" height="16"/><text class="l" x="345" y="64.5">PostgreSQL</text></g>
+              <path class="flow__path" d="M100 60 H162"/><path class="flow__path" d="M258 60 H320"/>
+              <text class="flow__lbl" x="131" y="34">pull</text><text class="flow__lbl" x="289" y="34">upsert</text>
+              <circle class="flow__packet" r="5"><animateMotion dur="2s" repeatCount="indefinite" path="M100 60 H162 M258 60 H320"/></circle>
+            </svg>
+            <div class="tags"><span>Scheduler</span><span>Idempotency</span><span>Reports</span></div>
+          </article>
+
+          <article class="case case--end">
+            <p class="mono">More on GitHub</p>
+            <a href="https://github.com/sameeer7" target="_blank" rel="noopener" class="case__big magnetic" data-cursor="Open">github.com/<br />sameeer7 ↗</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EDIT BAY ============ -->
+    <section class="bay section" id="edit">
+      <p class="eyebrow mono">05 — The Edit Bay</p>
+      <h2 class="h2 split-up">Every frame, <span class="accent-cut">on purpose.</span></h2>
+      <p class="section__lead">I handle every step of a video alone. Scroll to scrub through my workflow — the playhead moves with you.</p>
+
+      <div class="bay__pin" id="bayPin">
+        <div class="nle">
+          <div class="nle__top">
+            <div class="nle__monitor">
+              <div class="nle__screen" id="nleScreen">
+                <div class="scene scene--1"><span class="mono">STEP 01</span><b>Script</b><em>Simple words. Hook in the first 3 seconds.</em></div>
+                <div class="scene scene--2"><span class="mono">STEP 02</span><b>Visuals</b><em>AI scenes with Google Flow, B-roll &amp; layers.</em></div>
+                <div class="scene scene--3"><span class="mono">STEP 03</span><b>Voice-over</b><em>Clear narration with ElevenLabs.</em></div>
+                <div class="scene scene--4"><span class="mono">STEP 04</span><b>Music + SFX</b><em>Music low, voice clear, SFX on every beat.</em></div>
+                <div class="scene scene--5"><span class="mono">STEP 05</span><b>Edit</b><em>Jump cuts, keyframes, transitions, pace.</em></div>
+                <div class="scene scene--6"><span class="mono">STEP 06</span><b>Subtitles</b><em>Placed for readability on small screens.</em></div>
+                <div class="scene scene--7"><span class="mono">STEP 07</span><b>Thumbnail &amp; Publish</b><em>Then read analytics and improve.</em></div>
+              </div>
+              <div class="nle__ctrl mono"><span>◀◀</span><span class="play">▶</span><span>▶▶</span><span class="nle__tc" id="bayTc">00:00:00:00</span></div>
+            </div>
+            <div class="nle__side">
+              <p class="mono nle__label">Inspector</p>
+              <div class="meter"><span>Hook strength</span><i><b style="--w:92%"></b></i></div>
+              <div class="meter"><span>Voice clarity</span><i><b style="--w:88%"></b></i></div>
+              <div class="meter"><span>Music level</span><i><b style="--w:35%"></b></i></div>
+              <div class="meter"><span>Pacing</span><i><b style="--w:80%"></b></i></div>
+              <div class="nle__formats mono"><span>9:16</span><span>16:9</span><span>1080p</span></div>
+            </div>
+          </div>
+          <div class="nle__timeline">
+            <div class="ruler mono" id="ruler"></div>
+            <div class="trk"><b class="mono">V2</b><div class="lane"><i class="clip c-txt" style="left:2%;width:12%">Hook text</i><i class="clip c-txt" style="left:72%;width:12%">Subs</i><i class="clip c-txt" style="left:86%;width:13%">Thumb</i></div></div>
+            <div class="trk"><b class="mono">V1</b><div class="lane"><i class="clip c-vid" style="left:0;width:14%">Script</i><i class="clip c-vid" style="left:14.5%;width:14%">Visuals</i><i class="clip c-vid" style="left:29%;width:14%">Voice</i><i class="clip c-vid" style="left:43.5%;width:14%">Music</i><i class="clip c-vid" style="left:58%;width:14%">Edit</i><i class="clip c-vid" style="left:72.5%;width:13%">Subtitles</i><i class="clip c-vid" style="left:86%;width:14%">Publish</i></div></div>
+            <div class="trk"><b class="mono">A1</b><div class="lane"><i class="clip c-aud wave" style="left:28%;width:72%">VO</i></div></div>
+            <div class="trk"><b class="mono">A2</b><div class="lane"><i class="clip c-mus wave" style="left:42%;width:58%">BGM</i></div></div>
+            <div class="trk"><b class="mono">SFX</b><div class="lane"><i class="clip c-sfx" style="left:44%;width:3%"></i><i class="clip c-sfx" style="left:52%;width:3%"></i><i class="clip c-sfx" style="left:60%;width:4%"></i><i class="clip c-sfx" style="left:69%;width:3%"></i><i class="clip c-sfx" style="left:80%;width:3%"></i></div></div>
+            <div class="playhead playhead--big" id="bayPlayhead"><span></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CHANNELS ============ -->
+    <section class="channels section">
+      <p class="eyebrow mono">06 — Channels</p>
+      <h2 class="h2 split-up">What I create.</h2>
+
+      <div class="channels__grid">
+        <a class="ch-card ch-card--main tilt" href="https://youtube.com/@beginwithsam" target="_blank" rel="noopener" data-cursor="Watch">
+          <div class="ch-card__glow"></div>
+          <div class="ch-card__body">
+            <div class="ch-card__badge mono"><img src="assets/logos/youtube.svg" alt="" /> YouTube · @beginwithsam</div>
+            <div class="ch-card__brand">
+              <img class="ch-card__avatar" src="assets/sam-logo.png" alt="Begin With Sam channel logo" />
+              <h3>Begin With Sam</h3>
+            </div>
+            <p>Animated educational videos for kids and parents, starring Sam, Rosy and Coco. Shorts plus 3–7 minute episodes.</p>
+            <div class="ch-card__cast">
+              <span class="cast cast--sam">Sam</span><span class="cast cast--rosy">Rosy</span><span class="cast cast--coco">Coco</span>
+            </div>
+            <span class="ch-card__go">Visit channel ↗</span>
+          </div>
+          <ol class="ch-card__steps mono">
+            <li><b>01</b>Script</li><li><b>02</b>Visuals</li><li><b>03</b>Voice-over</li><li><b>04</b>Music &amp; SFX</li><li><b>05</b>Edit</li><li><b>06</b>Subtitles</li><li><b>07</b>Thumbnail &amp; publish</li>
+          </ol>
+        </a>
+      </div>
+
+      <!-- ===== Gallery: 1 episode + 2 Shorts (hover to preview, auto-plays on phones) ===== -->
+      <div class="gallery">
+        <div class="gallery__head">
+          <h3 class="gallery__title">Made by me</h3>
+          <p class="mono">Written, voiced &amp; edited solo · <span class="hide-touch">hover to preview</span><span class="show-touch">previews play as you scroll</span></p>
+        </div>
+        <div class="trio">
+          <a class="vid vid--long" href="https://youtube.com/@beginwithsam" target="_blank" rel="noopener" data-cursor="Play">
+            <img src="assets/thumbs/yawn.jpg" alt="Why Do We Yawn? thumbnail" loading="lazy" />
+            <video muted loop playsinline preload="none" data-src="assets/videos/yawn.mp4"></video>
+            <span class="vid__fmt mono">Episode · 16:9</span><span class="vid__time mono">6:53</span>
+            <div class="vid__meta"><b>Why Do We Yawn? The Great Yawning Mystery</b></div>
+            <span class="vid__play" aria-hidden="true"></span>
+          </a>
+          <a class="vid vid--short" href="https://youtube.com/@beginwithsam/shorts" target="_blank" rel="noopener" data-cursor="Play">
+            <img src="assets/thumbs/s-octopus.jpg" alt="It Has 3 Hearts Short thumbnail" loading="lazy" />
+            <video muted loop playsinline preload="none" data-src="assets/videos/s-octopus.mp4"></video>
+            <span class="vid__fmt mono">Short</span><span class="vid__time mono">0:43</span>
+            <div class="vid__meta"><b>It Has 3 Hearts</b></div>
+            <span class="vid__play" aria-hidden="true"></span>
+          </a>
+          <a class="vid vid--short" href="https://youtube.com/@beginwithsam/shorts" target="_blank" rel="noopener" data-cursor="Play">
+            <img src="assets/thumbs/s-sun.jpg" alt="What If the Sun Vanished Short thumbnail" loading="lazy" />
+            <video muted loop playsinline preload="none" data-src="assets/videos/s-sun.mp4"></video>
+            <span class="vid__fmt mono">Short</span><span class="vid__time mono">0:51</span>
+            <div class="vid__meta"><b>What If the Sun Vanished?</b></div>
+            <span class="vid__play" aria-hidden="true"></span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Extra YouTube embeds: add video IDs in script.js (VIDEOS array) -->
+      <div class="videos" id="videos"></div>
+    </section>
+
+    <!-- ============ SKILLS ============ -->
+    <section class="skills section" id="skills">
+      <p class="eyebrow mono">07 — Toolkit</p>
+      <h2 class="h2 split-up">What I work with.</h2>
+
+      <!-- Logo wall: tiles fly in and assemble as you scroll -->
+      <div class="stack" id="stack">
+        <div class="logo" style="--c:#f89820" data-cursor="Java"><img src="assets/logos/java.svg" alt="" /><span>Java</span></div>
+        <div class="logo" style="--c:#6db33f" data-cursor="Spring"><img src="assets/logos/springboot.svg" alt="" /><span>Spring Boot</span></div>
+        <div class="logo" style="--c:#6db33f" data-cursor="Spring"><img src="assets/logos/spring.svg" alt="" /><span>Spring</span></div>
+        <div class="logo" style="--c:#e535ab" data-cursor="Query"><img src="assets/logos/graphql.svg" alt="" /><span>GraphQL</span></div>
+        <div class="logo logo--star" style="--c:#ff6600" data-cursor="Queue"><img src="assets/logos/rabbitmq.svg" alt="" /><span>RabbitMQ</span></div>
+        <div class="logo" style="--c:#4f8fc6" data-cursor="SQL"><img src="assets/logos/postgresql.svg" alt="" /><span>PostgreSQL</span></div>
+        <div class="logo" style="--c:#3f94c9" data-cursor="SQL"><img src="assets/logos/mysql.svg" alt="" /><span>MySQL</span></div>
+        <div class="logo" style="--c:#dc382d" data-cursor="Cache"><img src="assets/logos/redis.svg" alt="" /><span>Redis</span></div>
+        <div class="logo" style="--c:#2496ed" data-cursor="Ship"><img src="assets/logos/docker.svg" alt="" /><span>Docker</span></div>
+        <div class="logo" style="--c:#f05032" data-cursor="Commit"><img src="assets/logos/git.svg" alt="" /><span>Git</span></div>
+        <div class="logo" style="--c:#ffffff" data-cursor="Repo"><img src="assets/logos/github.svg" alt="" /><span>GitHub</span></div>
+        <div class="logo" style="--c:#c71a36" data-cursor="Build"><img src="assets/logos/maven.svg" alt="" /><span>Maven</span></div>
+        <div class="logo" style="--c:#ff6c37" data-cursor="Test"><img src="assets/logos/postman.svg" alt="" /><span>Postman</span></div>
+        <div class="logo" style="--c:#2684ff" data-cursor="Track"><img src="assets/logos/jira.svg" alt="" /><span>JIRA</span></div>
+        <div class="logo" style="--c:#25a162" data-cursor="Test"><img src="assets/logos/junit.svg" alt="" /><span>JUnit</span></div>
+        <div class="logo" style="--c:#fe2857" data-cursor="IDE"><img src="assets/logos/intellij.svg" alt="" /><span>IntelliJ</span></div>
+        <div class="logo" style="--c:#95bf47" data-cursor="Store"><img src="assets/logos/shopify.svg" alt="" /><span>Shopify API</span></div>
+        <div class="logo logo--cut" style="--c:#ff0033" data-cursor="Watch"><img src="assets/logos/youtube.svg" alt="" /><span>YouTube</span></div>
+        <div class="logo logo--cut" style="--c:#ffffff" data-cursor="Voice"><img src="assets/logos/elevenlabs.svg" alt="" /><span>ElevenLabs</span></div>
+        <div class="logo logo--cut" style="--c:#4285f4" data-cursor="Create"><img src="assets/logos/google.svg" alt="" /><span>Google Flow</span></div>
+      </div>
+
+      <div class="skills__grid">
+        <div class="skills__col">
+          <h3 class="mono">&lt;/&gt; Engineering</h3>
+          <div class="skill-group"><p>Languages</p><div class="pills"><span>Java 8</span><span>Core Java</span><span>SQL</span><span>PL/pgSQL</span></div></div>
+          <div class="skill-group"><p>Frameworks</p><div class="pills"><span>Spring Boot</span><span>Spring MVC</span><span>Spring Security</span><span>JDBC</span></div></div>
+          <div class="skill-group"><p>APIs &amp; Messaging</p><div class="pills"><span>GraphQL</span><span>REST</span><span>RabbitMQ</span><span>Webhooks</span><span>JSON</span></div></div>
+          <div class="skill-group"><p>Data</p><div class="pills"><span>PostgreSQL</span><span>MySQL</span><span>Redis (basics)</span></div></div>
+          <div class="skill-group"><p>Tools</p><div class="pills"><span>Git</span><span>Maven</span><span>Postman</span><span>JIRA</span></div></div>
+          <div class="skill-group"><p>Learning now</p><div class="pills pills--learn"><span>Spring Data JPA</span><span>Microservices</span><span>Docker</span><span>JUnit</span><span>Resilience4j</span></div></div>
+        </div>
+        <div class="skills__col skills__col--cut">
+          <h3 class="mono">✂ Editing &amp; Content</h3>
+          <div class="skill-group"><p>Editing</p><div class="pills"><span>Jump cuts</span><span>Transitions</span><span>Text animation</span><span>Keyframes</span><span>B-roll</span><span>Layering</span></div></div>
+          <div class="skill-group"><p>Audio</p><div class="pills"><span>Voice-over</span><span>Music mixing</span><span>Sound effects</span></div></div>
+          <div class="skill-group"><p>Design</p><div class="pills"><span>Subtitles</span><span>Thumbnails</span><span>Hook-first intros</span><span>Intro / Outro</span></div></div>
+          <div class="skill-group"><p>Apps &amp; AI</p><div class="pills"><span>CapCut</span><span>InShot</span><span>ElevenLabs</span><span>Google Flow</span></div></div>
+          <div class="skill-group"><p>Content</p><div class="pills"><span>Scriptwriting</span><span>Content planning</span><span>YouTube Analytics</span></div></div>
+        </div>
+      </div>
+
+      <div class="edu">
+        <div class="edu__item"><span class="mono">2023</span><h4>B.Tech, Mechanical Engineering</h4><p>Swarnandhra College of Engineering &amp; Technology · CGPA 8.39</p></div>
+        <div class="edu__item"><span class="mono">2026 — now</span><h4>Spring Boot 0 → 100 · Cohort 5.0</h4><p>Coding Shuttle · Advanced Spring Boot, DevOps, System Design</p></div>
+        <div class="edu__item"><span class="mono">2024</span><h4>Java Full Stack Development</h4><p>Vcube Software Solutions, Hyderabad</p></div>
+        <div class="edu__item"><span class="mono">🏆 College fest</span><h4>1st Prize — Wireless Robo Soccer</h4><p>Arduino + Bluetooth robot, B.Tech project</p></div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="contact section" id="contact">
+      <p class="eyebrow mono">08 — Contact</p>
+      <h2 class="contact__big">
+        <span class="line"><span class="split">Let's build</span></span>
+        <span class="line"><span class="split outline">something.</span></span>
+      </h2>
+      <p class="section__lead">Hiring a Java backend developer or need an editor for Shorts, Reels or YouTube? I can join immediately.</p>
+
+      <button class="email magnetic" id="copyEmail" data-cursor="Copy">
+        <span class="email__text">sameer.mohamad.m@gmail.com</span>
+        <span class="email__toast mono" id="toast">Copied ✓</span>
+      </button>
+
+      <div class="contact__links">
+        <a href="https://www.linkedin.com/in/sameer-mohamad-0053711b9" target="_blank" rel="noopener" class="magnetic" data-cursor="Open">LinkedIn ↗</a>
+        <a href="https://github.com/sameeer7" target="_blank" rel="noopener" class="magnetic" data-cursor="Open">GitHub ↗</a>
+        <a href="https://youtube.com/@beginwithsam" target="_blank" rel="noopener" class="magnetic" data-cursor="Open">YouTube ↗</a>
+        <a href="mailto:sameer.mohamad.m@gmail.com" class="magnetic" data-cursor="Mail">Email ↗</a>
+      </div>
+
+      <div class="resumes">
+        <a href="assets/Sameer_Java_Backend_Resume.pdf" download class="resume magnetic" data-cursor="Get"><span class="mono">PDF</span> Backend Developer Resume ↓</a>
+        <a href="assets/Sameer_Video_Editor_Resume.pdf" download class="resume resume--cut magnetic" data-cursor="Get"><span class="mono">PDF</span> Video Editor Resume ↓</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer mono">
+    <span>© <span id="year"></span> Mohamad Sameer</span>
+    <a href="#top" data-cursor="Up">Back to top ↑</a>
+  </footer>
+
+  <script src="vendor/gsap.min.js"></script>
+  <script src="vendor/ScrollTrigger.min.js"></script>
+  <script src="vendor/SplitText.min.js"></script>
+  <script src="vendor/ScrambleTextPlugin.min.js"></script>
+  <script src="vendor/CustomEase.min.js"></script>
+  <script src="vendor/lenis.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
