@@ -608,6 +608,10 @@ if (!hasGsap) {
     let progress = reduceMotion ? 1 : 0, shown = -1, loaded = false;
 
     const pickSrc = () => `assets/globe/flight-${portrait() ? "port" : "land"}.mp4`;
+    // show the Earth picture straight away (also covers phones whose data saver blocks video)
+    const posterUrl = () => pickSrc().replace(".mp4", "-poster.jpg");
+    video.poster = posterUrl();
+    $("#locateStage").style.backgroundImage = `url(${posterUrl()})`;
     const load = () => {
       if (loaded) return; loaded = true;
       video.poster = pickSrc().replace(".mp4", "-poster.jpg");
