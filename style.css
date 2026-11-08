@@ -722,3 +722,57 @@ html[data-mode="cut"] .swap__b { transform: translateY(0); opacity: 1; }
 /* loader: motion logo in the middle */
 .loader__logo { flex: 1; display: grid; place-items: center; }
 .loader__logo .ml { --ml-size: clamp(110px, 21vw, 260px); }
+
+/* ==========================================================
+   v5 — Code mode = tech only · Cut mode = Begin With Sam / editing only
+   ========================================================== */
+html[data-mode="code"] [data-only="cut"], html[data-mode="cut"] [data-only="code"] { display: none !important; }
+.accent-code { color: var(--code); font-style: italic; font-weight: 600; }
+#marquee3 em { color: var(--code); }
+/* one panel per mode in the "worlds" section */
+.worlds__grid { grid-template-columns: 1fr; max-width: 1040px; }
+.worlds__grid .panel { min-height: 400px; }
+
+/* ---------- Code in Motion (tech channel) ---------- */
+.teach__grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: 24px; align-items: start; }
+.teach__feature { box-shadow: 0 30px 80px -30px rgba(91,140,255,.45); }
+.teach .vid__fmt { color: #8fb2ff; }
+.ch-card--cim { background: linear-gradient(150deg, #142a6e, #0a0f2a 65%); min-height: 0; height: 100%; }
+.ch-card--cim .ch-card__glow { background: radial-gradient(circle, rgba(91,140,255,.45), transparent 60%); }
+.ch-card--cim .ch-card__brand { margin: 26px 0 10px; }
+.ch-card--cim h3 { font-size: clamp(30px, 3vw, 46px); }
+.ch-card--cim h3 em { font: 600 .5em var(--mono); color: var(--cut); font-style: normal; margin: 0 .08em; vertical-align: .18em; }
+.ch-card__avatar--cim { width: clamp(56px, 5.5vw, 80px); }
+.ch-card--cim p { font-size: 15px; }
+.ch-card--cim .ch-card__go { color: #8fb2ff; margin-top: 18px; }
+.teach__path { list-style: none; display: grid; grid-template-columns: 1fr 1fr; column-gap: 18px; margin-top: 18px; border-top: 1px solid rgba(255,255,255,.14); }
+.teach__path li { display: flex; gap: 10px; align-items: baseline; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,.14); font-size: 13px; color: rgba(255,255,255,.62); }
+.teach__path li b { color: #8fb2ff; font-weight: 600; }
+.teach__path li.is-live { color: #fff; }
+.teach__path li i { font-style: normal; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: #04120b; background: var(--green); padding: 2px 7px; border-radius: 99px; align-self: center; }
+.teach__built { margin-top: 18px; color: var(--muted); font-size: 13px; }
+.teach__built span { color: var(--code); }
+@media (max-width: 1024px) { .teach__grid { grid-template-columns: 1fr; } .ch-card--cim { height: auto; } }
+
+/* one skills column per mode → use the full width */
+.skills__grid { grid-template-columns: 1fr; max-width: 1040px; }
+
+/* ---------- premium motion: Code in Motion ---------- */
+@property --spin { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+.teach__feature { overflow: hidden; }
+.teach__ring { position: absolute; inset: 0; z-index: 3; border-radius: inherit; padding: 1.5px; pointer-events: none;
+  background: conic-gradient(from var(--spin), transparent 0 62%, #8fb2ff 72%, #ffb547 80%, transparent 88%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); opacity: .9; }
+.teach__sheen { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.16) 48%, transparent 60%); transform: translateX(-120%); }
+.teach__feature img { transform-origin: 50% 50%; will-change: transform; }
+.teach .accent-code { display: inline-block; position: relative; }
+.teach__streaks { position: absolute; right: 100%; top: 50%; width: .9em; height: .5em; margin-top: -.25em; pointer-events: none; opacity: 0; }
+.teach__streaks i { position: absolute; right: 0; height: .06em; border-radius: 99px; background: linear-gradient(90deg, transparent, var(--code)); }
+.teach__streaks i:nth-child(1) { top: 0; width: 80%; } .teach__streaks i:nth-child(2) { top: 45%; width: 100%; } .teach__streaks i:nth-child(3) { top: 90%; width: 60%; }
+.teach__path li { position: relative; }
+.teach__path li i { position: relative; }
+.teach__path li.is-live i::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: 0 0 0 0 rgba(61,220,151,.7); animation: livePulse 1.8s ease-out infinite; }
+@keyframes livePulse { to { box-shadow: 0 0 0 9px rgba(61,220,151,0); } }
+.teach__built { font-variant-ligatures: none; }
+@media (prefers-reduced-motion: reduce) { .teach__path li.is-live i::after { animation: none; } }

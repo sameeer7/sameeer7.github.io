@@ -207,8 +207,16 @@ function showOut() {
 
 /* ---------------- Mode (Code / Cut) ---------------- */
 const root = document.documentElement;
-try { const saved = localStorage.getItem("ms-mode"); if (saved) root.dataset.mode = saved; } catch (e) {}
-const saveMode = () => { try { localStorage.setItem("ms-mode", root.dataset.mode); } catch (e) {} fitSwap(); };
+try { const saved = localStorage.getItem("ms-mode"); if (saved === "code" || saved === "cut") root.dataset.mode = saved; } catch (e) {}
+{ // a shared link like ?mode=cut or #cut opens that side directly
+  const q = new URLSearchParams(location.search).get("mode"), h = location.hash.slice(1);
+  if (q === "cut" || q === "code") root.dataset.mode = q; else if (h === "cut" || h === "code") root.dataset.mode = h;
+}
+const RESUME = { code: "assets/Sameer_Java_Backend_Resume.pdf", cut: "assets/Sameer_Video_Editor_Resume.pdf" };
+const setResume = () => $$(".js-resume").forEach(a => a.setAttribute("href", RESUME[root.dataset.mode] || RESUME.code));
+setResume();
+let onModeChange = () => {}; // set up by the GSAP block: scroll to top, re-measure, replay reveals
+const saveMode = () => { try { localStorage.setItem("ms-mode", root.dataset.mode); } catch (e) {} fitSwap(); setResume(); onModeChange(); };
 // "build backends" / "cut stories": size the slot to the visible phrase so there's no gap
 function fitSwap() {
   const active = $(root.dataset.mode === "cut" ? ".swap__b" : ".swap__a");
@@ -358,10 +366,9 @@ if (!hasGsap) {
   } });
 
   /* ---- Marquee: infinite, speeds up and flips with scroll direction ---- */
-  $("#marquee1").innerHTML += $("#marquee1").innerHTML;
-  $("#marquee2").innerHTML += $("#marquee2").innerHTML;
-  const m1 = gsap.to("#marquee1", { xPercent: -50, duration: 32, ease: "none", repeat: -1 });
-  const m2 = gsap.fromTo("#marquee2", { xPercent: -50 }, { xPercent: 0, duration: 34, ease: "none", repeat: -1 });
+  ["#marquee1", "#marquee2", "#marquee3", "#marquee4"].forEach(id => { const el = $(id); if (el) el.innerHTML += el.innerHTML; });
+  const m1 = gsap.to(["#marquee1", "#marquee4"], { xPercent: -50, duration: 32, ease: "none", repeat: -1 });
+  const m2 = gsap.fromTo(["#marquee2", "#marquee3"], { xPercent: -50 }, { xPercent: 0, duration: 34, ease: "none", repeat: -1 });
   let mDir = 1;
   ScrollTrigger.create({ onUpdate: self => {
     if (self.direction !== mDir) mDir = self.direction;
@@ -390,8 +397,9 @@ if (!hasGsap) {
   gsap.from("#reelFrame", { y: 100, opacity: 0, clipPath: "inset(18% 10% 18% 10% round 22px)", duration: 1.4, scrollTrigger: { trigger: "#reel", start: "top 85%" } });
 
   /* ---- About: words light up while scrolling ---- */
-  const words = splitWords($(".about__text"));
-  gsap.to(words, { opacity: 1, stagger: .05, ease: "none", scrollTrigger: { trigger: ".about__text", start: "top 80%", end: "bottom 45%", scrub: .5 } });
+  $$(".about__text").forEach(p => {
+    gsap.to(splitWords(p), { opacity: 1, stagger: .05, ease: "none", scrollTrigger: { trigger: p, start: "top 80%", end: "bottom 45%", scrub: .5 } });
+  });
 
   /* ---- Stats counters ---- */
   $$(".stat__num").forEach(el => {
@@ -479,7 +487,53 @@ if (!hasGsap) {
   gsap.from(".nle__timeline .clip", { scaleX: 0, transformOrigin: "left", duration: .8, stagger: .025, scrollTrigger: { trigger: ".nle", start: "top 70%" } });
 
   /* ---- Channel card + tilt ---- */
-  gsap.from(".ch-card", { y: 90, opacity: 0, duration: 1.3, scrollTrigger: { trigger: ".channels__grid", start: "top 85%" } });
+  gsap.from(".channels .ch-card", { y: 90, opacity: 0, duration: 1.3, scrollTrigger: { trigger: ".channels__grid", start: "top 85%" } });
+  /* ---- Code in Motion: cinematic reveal, parallax, light sweep, kinetic headline ---- */
+  if ($("#teach")) {
+    // 1. the episode card opens like a shutter, then a light sweep crosses it
+    gsap.timeline({ scrollTrigger: { trigger: ".teach__grid", start: "top 82%" } })
+      .fromTo(".teach__feature", { clipPath: "inset(48% 48% 48% 48% round 18px)", rotateX: 12, y: 60, transformPerspective: 1400 },
+        { clipPath: "inset(0% 0% 0% 0% round 18px)", rotateX: 0, y: 0, duration: 1.5, ease: "hop", clearProps: "clipPath" })
+      .from(".teach__feature .vid__fmt, .teach__feature .vid__time", { y: -16, opacity: 0, duration: .7, stagger: .08 }, "-=.6")
+      .from(".teach__feature .vid__meta b", { yPercent: 60, opacity: 0, duration: .9 }, "<")
+      .from(".teach__feature .vid__play", { scale: 0, rotate: -90, duration: 1, ease: "back.out(2.2)" }, "<.1")
+      .fromTo(".teach__sheen", { xPercent: -120 }, { xPercent: 120, duration: 1.2, ease: "power2.inOut" }, "-=.7")
+      // 2. the channel card rises in 3D beside it
+      .from(".ch-card--cim", { x: 80, rotateY: -16, opacity: 0, transformPerspective: 1200, duration: 1.3 }, .25)
+      .from(".ch-card__avatar--cim", { scale: 0, rotation: -220, duration: 1.4, ease: "elastic.out(1, .55)" }, .6)
+      .from(".ch-card--cim h3", { yPercent: 70, opacity: 0, duration: 1 }, .7)
+      // 3. learning path draws in, row by row, from the live episode
+      .from(".teach__path li", { clipPath: "inset(0 100% 0 0)", x: -10, duration: .8, stagger: .07, ease: "hop" }, .9)
+      .from(".teach__path li.is-live i", { scale: 0, duration: .6, ease: "back.out(3)" }, "-=.3");
+    // 4. scroll parallax inside the episode card + a slow orbiting border light
+    gsap.fromTo(".teach__feature img", { yPercent: -2.5, scale: 1.06 }, { yPercent: 2.5, scale: 1.06, ease: "none", scrollTrigger: { trigger: ".teach__feature", start: "top bottom", end: "bottom top", scrub: .8 } });
+    const ring = gsap.to(".teach__ring", { "--spin": "360deg", duration: 6, ease: "none", repeat: -1, paused: true });
+    ScrollTrigger.create({ trigger: ".teach__grid", start: "top bottom", end: "bottom top", onToggle: st => st.isActive ? ring.play() : ring.pause() });
+    $(".teach__feature").addEventListener("pointerenter", () => gsap.fromTo(".teach__sheen", { xPercent: -120 }, { xPercent: 120, duration: .9, ease: "power2.inOut" }));
+    // 5. kinetic headline: "in motion." dashes forward with speed lines every few seconds
+    const accent = $(".teach .accent-code"), streaks = $(".teach__streaks");
+    if (accent && !reduceMotion) {
+      const kick = gsap.timeline({ repeat: -1, repeatDelay: 3.2, paused: true })
+        .set(streaks, { opacity: 1 })
+        .fromTo(accent, { x: -46, skewX: -18 }, { x: 0, skewX: 0, duration: .9, ease: "elastic.out(1.1, .45)" })
+        .fromTo(".teach__streaks i", { scaleX: 1.6, transformOrigin: "right center", opacity: 1 }, { scaleX: 0, opacity: 0, duration: .55, stagger: .05, ease: "power3.out" }, 0)
+        .set(streaks, { opacity: 0 });
+      ScrollTrigger.create({ trigger: ".teach", start: "top 75%", end: "bottom top", onToggle: st => st.isActive ? kick.play() : kick.pause() });
+    }
+    // 6. "Built with code" decodes like a terminal
+    const built = $(".teach__built");
+    if (built) {
+      const final = built.innerHTML, plain = built.textContent, glyphs = "01<>{}[]/=+*#$%&";
+      ScrollTrigger.create({ trigger: built, start: "top 95%", onEnter: () => {
+        if (reduceMotion) return;
+        const o = { p: 0 };
+        gsap.to(o, { p: 1, duration: 1.6, ease: "power2.out", onUpdate: () => {
+          const n = Math.floor(o.p * plain.length);
+          built.textContent = plain.slice(0, n) + [...plain.slice(n)].map(c => c === " " ? " " : glyphs[(Math.random() * glyphs.length) | 0]).join("").slice(0, Math.max(0, Math.min(18, plain.length - n)));
+        }, onComplete: () => (built.innerHTML = final) });
+      } });
+    }
+  }
   gsap.from(".ch-card__steps li", { x: 40, opacity: 0, duration: .9, stagger: .07, scrollTrigger: { trigger: ".channels__grid", start: "top 75%" } });
   if (!isTouch) $$(".tilt").forEach(card => {
     card.addEventListener("pointermove", e => {
@@ -491,8 +545,8 @@ if (!hasGsap) {
   });
 
   /* ---- Sam logo pops in and bobs ---- */
-  gsap.from(".ch-card__avatar", { scale: 0, rotation: -200, duration: 1.4, ease: "elastic.out(1, .55)", scrollTrigger: { trigger: ".channels__grid", start: "top 75%" } });
-  gsap.to(".ch-card__avatar", { y: -8, rotation: 6, duration: 1.8, repeat: -1, yoyo: true, ease: "sine.inOut" });
+  gsap.from(".channels .ch-card__avatar", { scale: 0, rotation: -200, duration: 1.4, ease: "elastic.out(1, .55)", scrollTrigger: { trigger: ".channels__grid", start: "top 75%" } });
+  gsap.to(".channels .ch-card__avatar", { y: -8, rotation: 6, duration: 1.8, repeat: -1, yoyo: true, ease: "sine.inOut" });
 
   /* ---- Video trio: curtain reveal, image settles, Shorts drift with scroll ---- */
   gsap.from(".gallery__head > *", { y: 30, opacity: 0, duration: 1, stagger: .1, scrollTrigger: { trigger: ".gallery", start: "top 85%" } });
@@ -558,6 +612,23 @@ if (!hasGsap) {
   gsap.to(contactChars.flat(), { yPercent: 0, rotate: 0, duration: 1.3, stagger: .025, ease: "expo.out", scrollTrigger: { trigger: ".contact__big", start: "top 85%" } });
   gsap.from(".cform, .email, .contact__links a, .resume", { y: 40, opacity: 0, duration: 1, stagger: .06, scrollTrigger: { trigger: ".email", start: "top 92%" } });
   gsap.from(".footer > *", { y: 20, opacity: 0, duration: .8, stagger: .1, scrollTrigger: { trigger: ".footer", start: "top 98%" } });
+
+  /* ---- Mode switch: new sections appear, so re-measure and replay their scroll reveals ---- */
+  onModeChange = () => {
+    lenis ? lenis.scrollTo(0, { immediate: true, force: true }) : window.scrollTo(0, 0);
+    ScrollTrigger.refresh();
+    ScrollTrigger.getAll().forEach(st => {
+      const v = st.vars, a = st.animation;
+      if (!a || v.scrub || v.pin || v.containerAnimation) return;
+      if (st.start > 2) a.pause(0); // below the fold: reset so it plays again when scrolled into view
+    });
+    lenis && lenis.resize && lenis.resize();
+    // the hero re-enters for the new side: letters wave, then the new lines rise in
+    const vis = el => el && getComputedStyle(el).display !== "none";
+    gsap.fromTo(heroChars.flat(), { yPercent: 0 }, { keyframes: [{ yPercent: -18, duration: .22, ease: "power2.out" }, { yPercent: 0, duration: .6, ease: "elastic.out(1, .4)" }], stagger: .025, delay: .55 });
+    gsap.from([...$$(".hero__sub")].filter(vis).concat($$(".hero__ctas > *").filter(vis)), { y: 26, opacity: 0, filter: "blur(6px)", duration: .9, stagger: .07, delay: .7, clearProps: "filter" });
+    gsap.from(".marquee", { opacity: 0, y: 30, duration: 1, delay: .8 });
+  };
 
   /* ---- Custom cursor, spotlight + magnetic buttons ---- */
   if (!isTouch) {

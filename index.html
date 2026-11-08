@@ -26,8 +26,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="motion-logo.css?v=202611081907" />
-  <link rel="stylesheet" href="style.css?v=202611081907" />
+  <link rel="stylesheet" href="motion-logo.css?v=202611082150" />
+  <link rel="stylesheet" href="style.css?v=202611082150" />
 </head>
 <body>
 
@@ -64,12 +64,14 @@
     <a href="#top" class="nav__logo" data-cursor="Home"><b class="nav__mark">MS<span>.</span></b><img class="nav__avatar" src="assets/avatar.jpg" alt="Mohamad Sameer" width="40" height="40" /></a>
     <nav class="nav__links">
       <a href="#about"><span data-text="About">About</span></a>
-      <a href="#work"><span data-text="Work">Work</span></a>
-      <a href="#edit"><span data-text="Edit Bay">Edit Bay</span></a>
+      <a href="#work" data-only="code"><span data-text="Work">Work</span></a>
+      <a href="#teach" data-only="code"><span data-text="Channel">Channel</span></a>
+      <a href="#edit" data-only="cut"><span data-text="Edit Bay">Edit Bay</span></a>
+      <a href="#channels" data-only="cut"><span data-text="Channel">Channel</span></a>
       <a href="#skills"><span data-text="Stack">Stack</span></a>
       <a href="#contact"><span data-text="Contact">Contact</span></a>
     </nav>
-    <a class="nav__resume" href="assets/Sameer_Java_Backend_Resume.pdf" download data-cursor="Get">Resume ↓</a>
+    <a class="nav__resume js-resume" href="assets/Sameer_Java_Backend_Resume.pdf" download data-cursor="Get">Resume ↓</a>
     <button class="mode" id="modeToggle" aria-label="Switch between engineer and editor mode" data-cursor="Switch">
       <span class="mode__opt mode__opt--code">&lt;/&gt; Code</span>
       <span class="mode__opt mode__opt--cut">✂ Cut</span>
@@ -79,7 +81,7 @@
   </header>
 
   <div class="menu" id="menu">
-    <a href="#about">About</a><a href="#work">Work</a><a href="#edit">Edit Bay</a><a href="#skills">Stack</a><a href="#contact">Contact</a>
+    <a href="#about">About</a><a href="#work" data-only="code">Work</a><a href="#teach" data-only="code">Channel</a><a href="#edit" data-only="cut">Edit Bay</a><a href="#channels" data-only="cut">Channel</a><a href="#skills">Stack</a><a href="#contact">Contact</a>
   </div>
 
   <main id="top">
@@ -102,13 +104,18 @@
             I <span class="swap"><span class="swap__a">build backends</span><span class="swap__b">cut stories</span></span>
             that people can rely on.
           </p>
-          <p class="hero__sub">
+          <p class="hero__sub" data-only="code">
             <b>Java Backend Developer</b> — Spring Boot, GraphQL, RabbitMQ, PostgreSQL.<br />
-            <b>Video Editor & Creator</b> — Shorts, Reels and YouTube episodes.
+            <b>Creator of Code in Motion</b> — Java concepts, explained with animation.
+          </p>
+          <p class="hero__sub" data-only="cut">
+            <b>Video Editor &amp; Creator</b> — Shorts, Reels and YouTube episodes.<br />
+            <b>Begin With Sam</b> — animated stories for kids &amp; parents.
           </p>
           <div class="hero__ctas">
-            <a href="assets/Sameer_Java_Backend_Resume.pdf" download class="btn btn--primary magnetic" data-cursor="Get">Download Resume <span>↓</span></a>
-            <a href="#work" class="btn btn--ghost magnetic" data-cursor="Go">See my work</a>
+            <a href="assets/Sameer_Java_Backend_Resume.pdf" download class="btn btn--primary magnetic js-resume" data-cursor="Get">Download Resume <span>↓</span></a>
+            <a href="#work" class="btn btn--ghost magnetic" data-only="code" data-cursor="Go">See my work</a>
+            <a href="#edit" class="btn btn--ghost magnetic" data-only="cut" data-cursor="Go">See my edits</a>
             <a href="#contact" class="btn btn--ghost magnetic" data-cursor="Hi!">Hire me</a>
           </div>
           </div>
@@ -130,16 +137,22 @@
 
     <!-- ============ MARQUEE ============ -->
     <section class="marquee" aria-label="Skills ticker">
-      <div class="marquee__track" id="marquee1">
+      <div class="marquee__track" id="marquee1" data-only="code">
         <span class="mq"><img src="assets/logos/java.svg" alt="" />Java</span><em>✦</em><span class="mq"><img src="assets/logos/springboot.svg" alt="" />Spring Boot</span><em>✦</em><span class="mq"><img src="assets/logos/graphql.svg" alt="" />GraphQL</span><em>✦</em><span class="mq"><img src="assets/logos/rabbitmq.svg" alt="" />RabbitMQ</span><em>✦</em><span class="mq"><img src="assets/logos/postgresql.svg" alt="" />PostgreSQL</span><em>✦</em><span class="mq"><img src="assets/logos/redis.svg" alt="" />Redis</span><em>✦</em><span class="mq"><img src="assets/logos/docker.svg" alt="" />Docker</span><em>✦</em><span class="mq"><img src="assets/logos/git.svg" alt="" />Git</span><em>✦</em>
       </div>
-      <div class="marquee__track marquee__track--rev" id="marquee2">
+      <div class="marquee__track marquee__track--rev" id="marquee3" data-only="code">
+        <span>REST APIs</span><em>●</em><span>Message Queues</span><em>●</em><span>Batch Jobs</span><em>●</em><span>Idempotency</span><em>●</em><span>JVM Internals</span><em>●</em><span>Clean Code</span><em>●</em><span>SQL Tuning</span><em>●</em><span>Integrations</span><em>●</em>
+      </div>
+      <div class="marquee__track" id="marquee4" data-only="cut">
+        <span>Begin With Sam</span><em>✦</em><span>Sam, Rosy &amp; Coco</span><em>✦</em><span>Kids &amp; Parents</span><em>✦</em><span>9:16 Shorts</span><em>✦</em><span>16:9 Episodes</span><em>✦</em><span>Script → Publish</span><em>✦</em>
+      </div>
+      <div class="marquee__track marquee__track--rev" id="marquee2" data-only="cut">
         <span>Shorts</span><em>●</em><span>Reels</span><em>●</em><span>Jump Cuts</span><em>●</em><span>Keyframes</span><em>●</em><span>Subtitles</span><em>●</em><span>Sound Design</span><em>●</em><span>Thumbnails</span><em>●</em><span>Voice-over</span><em>●</em>
       </div>
     </section>
 
     <!-- ============ SHOWREEL ============ -->
-    <section class="reel" id="reel">
+    <section class="reel" id="reel" data-only="cut">
       <div class="reel__head">
         <p class="eyebrow mono">Showreel — Begin With Sam channel reel</p>
         <p class="mono reel__meta">16:9 · 1280×720 · 00:15</p>
@@ -154,26 +167,37 @@
     <!-- ============ ABOUT ============ -->
     <section class="about section" id="about">
       <p class="eyebrow mono">01 — About</p>
-      <p class="about__text reveal-words">
-        I'm Sameer. A mechanical engineer who fell in love with code. I spent 1.5 years building Spring Boot services for retail and POS platforms — APIs, client integrations and production data fixes. After work, I run my own YouTube channel, where I write, voice, edit and publish every video myself. Two crafts, one habit: <span class="hl">attention to detail.</span>
+      <p class="about__text reveal-words" data-only="code">
+        I'm Sameer. A mechanical engineer who fell in love with code. I spent 1.5 years building Spring Boot services for retail and POS platforms — APIs, client integrations and production data fixes. Now I also teach what I learn on Code in Motion, my channel where I explain Java concepts with animation and real, running code. One habit runs through all of it: <span class="hl">attention to detail.</span>
+      </p>
+      <p class="about__text reveal-words" data-only="cut">
+        I'm Sameer. I run Begin With Sam, an animated YouTube channel for kids and parents, where I write, voice, edit and publish every video myself. I plan every cut like a system: a hook in the first 3 seconds, music under the voice, subtitles you can read on a phone. One habit runs through all of it: <span class="hl">attention to detail.</span>
       </p>
 
-      <div class="stats">
+      <div class="stats" data-only="code">
         <div class="stat"><span class="stat__num" data-count="1.5" data-decimals="1">0</span><span class="stat__suf">yrs</span><p>Backend experience at CW Suite</p></div>
         <div class="stat"><span class="stat__num" data-count="3">0</span><span class="stat__suf">live</span><p>Client integrations shipped end to end</p></div>
         <div class="stat"><span class="stat__num" data-count="100">0</span><span class="stat__suf">/day</span><p>Orders synced by my batch jobs (80–100)</p></div>
+        <div class="stat"><span class="stat__num" data-count="4">0</span><span class="stat__suf">steps</span><p>How the JVM runs Java, taught on Code in Motion</p></div>
+      </div>
+      <div class="stats" data-only="cut">
         <div class="stat"><span class="stat__num" data-count="7">0</span><span class="stat__suf">steps</span><p>Video pipeline I run solo, script to publish</p></div>
+        <div class="stat"><span class="stat__num" data-count="3">0</span><span class="stat__suf">cast</span><p>Recurring characters: Sam, Rosy &amp; Coco</p></div>
+        <div class="stat"><span class="stat__num" data-count="2">0</span><span class="stat__suf">formats</span><p>9:16 Shorts and 16:9 episodes</p></div>
+        <div class="stat"><span class="stat__num" data-count="100">0</span><span class="stat__suf">%</span><p>Written, voiced &amp; edited by me</p></div>
       </div>
     </section>
 
     <!-- ============ TWO WORLDS ============ -->
     <section class="worlds section">
-      <p class="eyebrow mono">02 — Two worlds, one person</p>
-      <h2 class="h2 split-up">Logic by day. <span class="accent-cut">Rhythm</span> by night.</h2>
+      <p class="eyebrow mono" data-only="code">02 — In production</p>
+      <h2 class="h2 split-up" data-only="code">Code that <span class="accent-code">ships.</span></h2>
+      <p class="eyebrow mono" data-only="cut">02 — On the timeline</p>
+      <h2 class="h2 split-up" data-only="cut">Stories, <span class="accent-cut">cut with rhythm.</span></h2>
 
       <div class="worlds__grid">
         <!-- Terminal -->
-        <div class="panel terminal" data-cursor="Code">
+        <div class="panel terminal" data-only="code" data-cursor="Code">
           <div class="panel__bar"><i></i><i></i><i></i><span class="mono">OrderConsumer.java</span></div>
           <pre class="terminal__code mono"><code id="typeCode"></code><span class="caret"></span></pre>
           <div class="terminal__out mono" id="termOut">
@@ -184,7 +208,7 @@
         </div>
 
         <!-- Mini timeline -->
-        <div class="panel editor" data-cursor="Cut">
+        <div class="panel editor" data-only="cut" data-cursor="Cut">
           <div class="panel__bar"><i></i><i></i><i></i><span class="mono">BeginWithSam_Ep12.prproj</span></div>
           <div class="editor__preview">
             <div class="editor__frame">
@@ -211,7 +235,7 @@
       <div class="timeline">
         <div class="timeline__line"><i id="tlFill"></i></div>
 
-        <article class="tl-item">
+        <article class="tl-item" data-only="code">
           <div class="tl-item__dot"></div>
           <div class="tl-item__date mono">May 2025 — Oct 2026</div>
           <div class="tl-item__card">
@@ -226,7 +250,7 @@
           </div>
         </article>
 
-        <article class="tl-item">
+        <article class="tl-item" data-only="code">
           <div class="tl-item__dot"></div>
           <div class="tl-item__date mono">Data Integrity Team · CW Suite</div>
           <div class="tl-item__card">
@@ -241,7 +265,21 @@
           </div>
         </article>
 
-        <article class="tl-item">
+        <article class="tl-item" data-only="code">
+          <div class="tl-item__dot"></div>
+          <div class="tl-item__date mono">2026 — Present</div>
+          <div class="tl-item__card">
+            <h3>Creator <span>· Code in Motion</span></h3>
+            <ul>
+              <li>Tech channel that explains Java &amp; Spring Boot concepts with animation, then teaches how to answer them in interviews.</li>
+              <li>Every code example is compiled and run for real — outputs on screen are genuine (javap, JIT logs, class loaders).</li>
+              <li>Videos are rendered from code: Node.js canvas animation, FFmpeg encoding, neural voice-over and word-timed captions.</li>
+            </ul>
+            <div class="tags"><span>Java</span><span>JVM</span><span>Node.js</span><span>FFmpeg</span></div>
+          </div>
+        </article>
+
+        <article class="tl-item" data-only="cut">
           <div class="tl-item__dot"></div>
           <div class="tl-item__date mono">2026 — Present</div>
           <div class="tl-item__card tl-item__card--cut">
@@ -255,7 +293,7 @@
           </div>
         </article>
 
-        <article class="tl-item">
+        <article class="tl-item" data-only="code">
           <div class="tl-item__dot"></div>
           <div class="tl-item__date mono">Sep 2024 — Feb 2025</div>
           <div class="tl-item__card">
@@ -268,7 +306,7 @@
     </section>
 
     <!-- ============ WORK (horizontal) ============ -->
-    <section class="work" id="work">
+    <section class="work" id="work" data-only="code">
       <div class="work__pin">
         <div class="work__head">
           <p class="eyebrow mono">04 — Selected work</p>
@@ -334,9 +372,42 @@
       </div>
     </section>
 
+    <!-- ============ CODE IN MOTION (tech channel) ============ -->
+    <section class="teach section" id="teach" data-only="code">
+      <p class="eyebrow mono">05 — Code in Motion</p>
+      <h2 class="h2 split-up">I explain Java <span class="accent-code"><span class="teach__streaks" aria-hidden="true"><i></i><i></i><i></i></span>in motion.</span></h2>
+      <p class="section__lead">My tech channel: one concept per episode, animated step by step with real, running code — then exactly how to answer it in an interview.</p>
+
+      <div class="teach__grid">
+        <a class="vid vid--long teach__feature" href="https://www.youtube.com/watch?v=hz_CqYHDOX0" target="_blank" rel="noopener" data-cursor="Play">
+          <img src="assets/thumbs/cim-jvm.jpg" alt="How Does the JVM Work? thumbnail" loading="lazy" />
+          <video muted loop playsinline preload="none" data-src="assets/videos/cim-jvm.mp4"></video>
+          <span class="vid__fmt mono">Episode 01 · 16:9</span><span class="vid__time mono">5:52</span>
+          <div class="vid__meta"><b>How Does the JVM Work? Java Interview Question Explained</b></div>
+          <span class="vid__play" aria-hidden="true"></span>
+          <span class="teach__sheen" aria-hidden="true"></span><span class="teach__ring" aria-hidden="true"></span>
+        </a>
+
+        <a class="ch-card ch-card--cim tilt" href="https://www.youtube.com/@watchcodeinmotion" target="_blank" rel="noopener" data-cursor="Watch">
+          <div class="ch-card__glow"></div>
+          <div class="ch-card__badge mono"><img src="assets/logos/youtube.svg" alt="" /> YouTube · @watchcodeinmotion</div>
+          <div class="ch-card__brand">
+            <img class="ch-card__avatar ch-card__avatar--cim" src="assets/cim-logo.png" alt="Code in Motion channel logo" />
+            <h3>Code <em>in</em> Motion</h3>
+          </div>
+          <p>Part 1: understand the concept. Part 2: answer it like a pro.</p>
+          <ol class="teach__path mono">
+            <li class="is-live"><b>01</b>JVM internals <i>live</i></li><li><b>02</b>Collections</li><li><b>03</b>HashMap</li><li><b>04</b>Multithreading</li><li><b>05</b>REST &amp; GraphQL</li><li><b>06</b>Spring Boot</li>
+          </ol>
+          <span class="ch-card__go">Visit channel ↗</span>
+        </a>
+      </div>
+      <p class="teach__built mono"><span>Built with code:</span> Node.js canvas animation · FFmpeg · Python audio · neural voice-over · word-timed captions</p>
+    </section>
+
     <!-- ============ EDIT BAY ============ -->
-    <section class="bay section" id="edit">
-      <p class="eyebrow mono">05 — The Edit Bay</p>
+    <section class="bay section" id="edit" data-only="cut">
+      <p class="eyebrow mono">04 — The Edit Bay</p>
       <h2 class="h2 split-up">Every frame, <span class="accent-cut">on purpose.</span></h2>
       <p class="section__lead">I handle every step of a video alone. Scroll to scrub through my workflow — the playhead moves with you.</p>
 
@@ -378,8 +449,8 @@
     </section>
 
     <!-- ============ CHANNELS ============ -->
-    <section class="channels section">
-      <p class="eyebrow mono">06 — Channels</p>
+    <section class="channels section" id="channels" data-only="cut">
+      <p class="eyebrow mono">05 — Channel</p>
       <h2 class="h2 split-up">What I create.</h2>
 
       <div class="channels__grid">
@@ -473,11 +544,11 @@
 
     <!-- ============ SKILLS ============ -->
     <section class="skills section" id="skills">
-      <p class="eyebrow mono">07 — Toolkit</p>
+      <p class="eyebrow mono">06 — Toolkit</p>
       <h2 class="h2 split-up">What I work with.</h2>
 
       <!-- Logo wall: tiles fly in and assemble as you scroll -->
-      <div class="stack" id="stack">
+      <div class="stack" id="stack" data-only="code">
         <div class="logo" style="--c:#f89820" data-cursor="Java"><img src="assets/logos/java.svg" alt="" /><span>Java</span></div>
         <div class="logo" style="--c:#6db33f" data-cursor="Spring"><img src="assets/logos/springboot.svg" alt="" /><span>Spring Boot</span></div>
         <div class="logo" style="--c:#6db33f" data-cursor="Spring"><img src="assets/logos/spring.svg" alt="" /><span>Spring</span></div>
@@ -495,13 +566,13 @@
         <div class="logo" style="--c:#25a162" data-cursor="Test"><img src="assets/logos/junit.svg" alt="" /><span>JUnit</span></div>
         <div class="logo" style="--c:#fe2857" data-cursor="IDE"><img src="assets/logos/intellij.svg" alt="" /><span>IntelliJ</span></div>
         <div class="logo" style="--c:#95bf47" data-cursor="Store"><img src="assets/logos/shopify.svg" alt="" /><span>Shopify API</span></div>
-        <div class="logo logo--cut" style="--c:#ff0033" data-cursor="Watch"><img src="assets/logos/youtube.svg" alt="" /><span>YouTube</span></div>
-        <div class="logo logo--cut" style="--c:#ffffff" data-cursor="Voice"><img src="assets/logos/elevenlabs.svg" alt="" /><span>ElevenLabs</span></div>
-        <div class="logo logo--cut" style="--c:#4285f4" data-cursor="Create"><img src="assets/logos/google.svg" alt="" /><span>Google Flow</span></div>
+        <div class="logo logo--cut" data-only="cut" style="--c:#ff0033" data-cursor="Watch"><img src="assets/logos/youtube.svg" alt="" /><span>YouTube</span></div>
+        <div class="logo logo--cut" data-only="cut" style="--c:#ffffff" data-cursor="Voice"><img src="assets/logos/elevenlabs.svg" alt="" /><span>ElevenLabs</span></div>
+        <div class="logo logo--cut" data-only="cut" style="--c:#4285f4" data-cursor="Create"><img src="assets/logos/google.svg" alt="" /><span>Google Flow</span></div>
       </div>
 
       <div class="skills__grid">
-        <div class="skills__col">
+        <div class="skills__col" data-only="code">
           <h3 class="mono">&lt;/&gt; Engineering</h3>
           <div class="skill-group"><p>Languages</p><div class="pills"><span>Java 8</span><span>Core Java</span><span>SQL</span><span>PL/pgSQL</span></div></div>
           <div class="skill-group"><p>Frameworks</p><div class="pills"><span>Spring Boot</span><span>Spring MVC</span><span>Spring Security</span><span>JDBC</span></div></div>
@@ -510,7 +581,7 @@
           <div class="skill-group"><p>Tools</p><div class="pills"><span>Git</span><span>Maven</span><span>Postman</span><span>JIRA</span></div></div>
           <div class="skill-group"><p>Learning now</p><div class="pills pills--learn"><span>Spring Data JPA</span><span>Microservices</span><span>Docker</span><span>JUnit</span><span>Resilience4j</span></div></div>
         </div>
-        <div class="skills__col skills__col--cut">
+        <div class="skills__col skills__col--cut" data-only="cut">
           <h3 class="mono">✂ Editing &amp; Content</h3>
           <div class="skill-group"><p>Editing</p><div class="pills"><span>Jump cuts</span><span>Transitions</span><span>Text animation</span><span>Keyframes</span><span>B-roll</span><span>Layering</span></div></div>
           <div class="skill-group"><p>Audio</p><div class="pills"><span>Voice-over</span><span>Music mixing</span><span>Sound effects</span></div></div>
@@ -520,10 +591,10 @@
         </div>
       </div>
 
-      <div class="edu">
+      <div class="edu" data-only="code">
         <div class="edu__item"><span class="mono">2023</span><h4>B.Tech, Mechanical Engineering</h4><p>Swarnandhra College of Engineering &amp; Technology · CGPA 8.39</p></div>
-        <div class="edu__item"><span class="mono">2026 — now</span><h4>Spring Boot 0 → 100 · Cohort 5.0</h4><p>Coding Shuttle · Advanced Spring Boot, DevOps, System Design</p></div>
-        <div class="edu__item"><span class="mono">2024</span><h4>Java Full Stack Development</h4><p>Vcube Software Solutions, Hyderabad</p></div>
+        <div class="edu__item" data-only="code"><span class="mono">2026 — now</span><h4>Spring Boot 0 → 100 · Cohort 5.0</h4><p>Coding Shuttle · Advanced Spring Boot, DevOps, System Design</p></div>
+        <div class="edu__item" data-only="code"><span class="mono">2024</span><h4>Java Full Stack Development</h4><p>Vcube Software Solutions, Hyderabad</p></div>
         <div class="edu__item"><span class="mono">🏆 College fest</span><h4>1st Prize — Wireless Robo Soccer</h4><p>Arduino + Bluetooth robot, B.Tech project</p></div>
       </div>
     </section>
@@ -536,7 +607,7 @@
         <div class="locate__label" id="hydLabel" aria-hidden="true"><b>Hyderabad</b><small>17.3850° N · 78.4867° E</small></div>
         <div class="locate__vignette" aria-hidden="true"></div>
         <div class="locate__ui">
-          <p class="eyebrow mono">08 — Based in</p>
+          <p class="eyebrow mono">07 — Based in</p>
           <h2 class="locate__title">
             <span class="locate__line locate__line--1">From anywhere on Earth…</span>
             <span class="locate__line locate__line--2">…to <em>Hyderabad</em>, India.</span>
@@ -554,12 +625,13 @@
 
     <!-- ============ CONTACT ============ -->
     <section class="contact section" id="contact">
-      <p class="eyebrow mono">09 — Contact</p>
+      <p class="eyebrow mono">08 — Contact</p>
       <h2 class="contact__big">
         <span class="line"><span class="split">Let's build</span></span>
         <span class="line"><span class="split outline">something.</span></span>
       </h2>
-      <p class="section__lead">Hiring a Java backend developer or need an editor for Shorts, Reels or YouTube? I can join immediately.</p>
+      <p class="section__lead" data-only="code">Hiring a Java backend developer? I can join immediately — on-site, hybrid or remote.</p>
+      <p class="section__lead" data-only="cut">Need an editor for Shorts, Reels or YouTube episodes? Let's make something people watch till the end.</p>
 
       <!-- Contact form: messages are emailed to Sameer via FormSubmit -->
       <form class="cform" id="contactForm" novalidate>
@@ -584,18 +656,19 @@
       <div class="contact__links">
         <a href="https://www.linkedin.com/in/sameer-mohamad-0053711b9" target="_blank" rel="noopener" class="magnetic" data-cursor="Open">LinkedIn ↗</a>
         <a href="https://github.com/sameeer7" target="_blank" rel="noopener" class="magnetic" data-cursor="Open">GitHub ↗</a>
-        <a href="https://youtube.com/@beginwithsam" target="_blank" rel="noopener" class="magnetic" data-cursor="Open">YouTube ↗</a>
+        <a href="https://www.youtube.com/@watchcodeinmotion" target="_blank" rel="noopener" class="magnetic" data-only="code" data-cursor="Open">YouTube ↗</a>
+        <a href="https://youtube.com/@beginwithsam" target="_blank" rel="noopener" class="magnetic" data-only="cut" data-cursor="Open">YouTube ↗</a>
         <a href="mailto:sameer.mohamad.m@gmail.com" class="magnetic" data-cursor="Mail">Email ↗</a>
       </div>
 
       <div class="resumes">
-        <a href="assets/Sameer_Java_Backend_Resume.pdf" download class="resume magnetic" data-cursor="Get"><span class="mono">PDF</span> Backend Developer Resume ↓</a>
-        <a href="assets/Sameer_Video_Editor_Resume.pdf" download class="resume resume--cut magnetic" data-cursor="Get"><span class="mono">PDF</span> Video Editor Resume ↓</a>
+        <a href="assets/Sameer_Java_Backend_Resume.pdf" download class="resume magnetic" data-only="code" data-cursor="Get"><span class="mono">PDF</span> Backend Developer Resume ↓</a>
+        <a href="assets/Sameer_Video_Editor_Resume.pdf" download class="resume resume--cut magnetic" data-only="cut" data-cursor="Get"><span class="mono">PDF</span> Video Editor Resume ↓</a>
       </div>
     </section>
   </main>
 
-  <a class="float-cta" id="floatCta" href="assets/Sameer_Java_Backend_Resume.pdf" download aria-label="Download resume">📄 Resume</a>
+  <a class="float-cta js-resume" id="floatCta" href="assets/Sameer_Java_Backend_Resume.pdf" download aria-label="Download resume">📄 Resume</a>
 
   <footer class="footer mono">
     <span>© <span id="year"></span> Mohamad Sameer</span>
@@ -609,7 +682,7 @@
   <script src="vendor/CustomEase.min.js"></script>
   <script src="vendor/lenis.min.js"></script>
   <script src="vendor/confetti.browser.js"></script>
-  <script src="motion-logo.js?v=202611081907"></script>
-  <script src="script.js?v=202611081907"></script>
+  <script src="motion-logo.js?v=202611082150"></script>
+  <script src="script.js?v=202611082150"></script>
 </body>
 </html>
