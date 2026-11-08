@@ -26,7 +26,7 @@
 - **Edit Bay**: scrolling scrubs a video-editor timeline and playhead
 - **Logo wall**: 20 tech logos fly in from all over the screen and assemble as you scroll
 - **Video gallery**: episode and Shorts previews play on hover (on phones, as you scroll)
-- Text effects with **SplitText** and **ScrambleText**, a scroll progress bar, a magnetic custom cursor
+- Text effects with **SplitText**, a scroll progress bar, a magnetic custom cursor
 - Fully responsive, and respects *reduce motion* settings
 
 ## 🧱 Built with
@@ -34,7 +34,7 @@
 | Layer | Tools |
 |---|---|
 | Markup & style | HTML5, CSS3 (custom properties, grid, `clip-path`, `color-mix`) |
-| Animation | GSAP 3.13 · ScrollTrigger · SplitText · ScrambleText · CustomEase |
+| Animation | GSAP 3.13 · ScrollTrigger · SplitText · CustomEase |
 | Scrolling | Lenis |
 | Hosting | GitHub Pages |
 

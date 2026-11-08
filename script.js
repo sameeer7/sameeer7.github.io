@@ -1,6 +1,6 @@
 /* ==========================================================
    Mohamad Sameer — Portfolio scripts
-   GSAP 3.13 + ScrollTrigger + SplitText + ScrambleText + CustomEase + Lenis
+   GSAP 3.13 + ScrollTrigger + SplitText + CustomEase + Lenis
    ========================================================== */
 
 /* ----------------------------------------------------------
@@ -194,7 +194,6 @@ if (!hasGsap) {
 } else {
   const plugins = [ScrollTrigger];
   if (window.SplitText) plugins.push(SplitText);
-  if (window.ScrambleTextPlugin) plugins.push(ScrambleTextPlugin);
   if (window.CustomEase) plugins.push(CustomEase);
   gsap.registerPlugin(...plugins);
   if (window.CustomEase) {
@@ -258,10 +257,6 @@ if (!hasGsap) {
       .from(".hero__lead, .hero__sub, .hero__ctas, .hero__scroll", { y: 30, opacity: 0, duration: 1.1, stagger: .08 }, "-=1.3")
       .from(".hero__meta span", { y: 14, opacity: 0, duration: .8, stagger: .08 }, "<")
       .fromTo(".nav", { yPercent: -100, y: 0, opacity: 0 }, { yPercent: 0, y: 0, opacity: 1, duration: .9, clearProps: "transform,translate" }, .3);
-    if (window.ScrambleTextPlugin) $$(".hero__meta span").forEach((s, i) => {
-      const txt = s.textContent.trim(), dot = s.querySelector(".dot");
-      tl.to(s, { duration: 1.2, scrambleText: { text: txt, chars: "01<>/{}#", speed: .5 }, onComplete: () => { if (dot) s.prepend(dot); } }, "-=1" );
-    });
     return tl;
   }
 
@@ -364,11 +359,9 @@ if (!hasGsap) {
     gsap.from(w, { yPercent: 115, rotate: 5, duration: 1.2, stagger: .07, scrollTrigger: { trigger: h, start: "top 86%" } });
   });
 
-  /* ---- Eyebrows: decode / scramble in ---- */
+  /* ---- Eyebrows: clean wipe-in from the left ---- */
   $$(".eyebrow").forEach(el => {
-    const txt = el.textContent;
-    gsap.from(el, { y: 16, opacity: 0, duration: .8, scrollTrigger: { trigger: el, start: "top 92%" } });
-    if (window.ScrambleTextPlugin) gsap.to(el, { duration: 1.4, scrambleText: { text: txt, chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789—", speed: .6, revealDelay: .2 }, scrollTrigger: { trigger: el, start: "top 92%" } });
+    gsap.fromTo(el, { clipPath: "inset(0 100% 0 0)", x: -12, opacity: 0 }, { clipPath: "inset(0 0% 0 0)", x: 0, opacity: 1, duration: 1.1, ease: "hop", scrollTrigger: { trigger: el, start: "top 92%" } });
   });
   $$(".section__lead").forEach(el => gsap.from(el, { y: 24, opacity: 0, duration: 1, scrollTrigger: { trigger: el, start: "top 90%" } }));
 
@@ -461,6 +454,18 @@ if (!hasGsap) {
     });
     c.addEventListener("pointerleave", () => gsap.to(c, { rotationX: 0, rotationY: 0, duration: .9, ease: "elastic.out(1, .5)" }));
   });
+
+  /* ---- More Shorts strip ---- */
+  gsap.from("#moreShorts > *", { y: 60, opacity: 0, rotate: 3, duration: 1.1, stagger: .09, scrollTrigger: { trigger: "#moreShorts", start: "top 88%" } });
+  gsap.from(".gallery__head--more > *", { y: 24, opacity: 0, duration: .9, stagger: .08, scrollTrigger: { trigger: ".gallery__head--more", start: "top 90%" } });
+
+  /* ---- Floating resume button: visible after the hero, hidden near the contact section ---- */
+  const floatCta = $("#floatCta");
+  const setFloat = () => {
+    const y = scrollY, heroEnd = $(".hero").offsetHeight * .8, contactTop = $("#contact").getBoundingClientRect().top + y - innerHeight * .6;
+    floatCta.classList.toggle("is-visible", y > heroEnd && y < contactTop);
+  };
+  ScrollTrigger.create({ start: 0, end: "max", onUpdate: setFloat }); setFloat();
 
   /* ---- Logo wall: tiles fly in from everywhere and assemble ---- */
   const tiles = $$(".logo");

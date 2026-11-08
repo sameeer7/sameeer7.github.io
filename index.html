@@ -6,10 +6,23 @@
   <title>Mohamad Sameer — Java Backend Developer & Video Editor</title>
   <meta name="description" content="Mohamad Sameer — Java Spring Boot backend developer and video editor. I build reliable APIs and integrations, and I edit Shorts, Reels and YouTube videos." />
   <meta name="theme-color" content="#07080c" />
-  <meta property="og:title" content="Mohamad Sameer — I build backends. I cut stories." />
-  <meta property="og:description" content="Java Backend Developer (Spring Boot, GraphQL, RabbitMQ, PostgreSQL) and Video Editor / Content Creator." />
-  <meta property="og:image" content="assets/sameer.jpg" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%2307080c'/><text x='50' y='68' font-size='52' font-family='Arial Black,Arial' font-weight='900' text-anchor='middle' fill='%235b8cff'>MS</text></svg>" />
+  <link rel="canonical" href="https://sameeer7.github.io/" />
+  <!-- link preview (LinkedIn, WhatsApp, X, Slack) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sameeer7.github.io/" />
+  <meta property="og:site_name" content="Mohamad Sameer" />
+  <meta property="og:title" content="Mohamad Sameer — Java Backend Developer & Video Editor" />
+  <meta property="og:description" content="Spring Boot, GraphQL, RabbitMQ, PostgreSQL. 3 client integrations shipped end to end. Open to work — immediate joiner." />
+  <meta property="og:image" content="https://sameeer7.github.io/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Mohamad Sameer — Java Backend Developer and Video Editor" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Mohamad Sameer — Java Backend Developer & Video Editor" />
+  <meta name="twitter:description" content="Spring Boot, GraphQL, RabbitMQ, PostgreSQL. Open to work — immediate joiner." />
+  <meta name="twitter:image" content="https://sameeer7.github.io/assets/og-image.png" />
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon-64.png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -58,6 +71,7 @@
       <a href="#skills"><span data-text="Stack">Stack</span></a>
       <a href="#contact"><span data-text="Contact">Contact</span></a>
     </nav>
+    <a class="nav__resume" href="assets/Sameer_Java_Backend_Resume.pdf" download data-cursor="Get">Resume ↓</a>
     <button class="mode" id="modeToggle" aria-label="Switch between engineer and editor mode" data-cursor="Switch">
       <span class="mode__opt mode__opt--code">&lt;/&gt; Code</span>
       <span class="mode__opt mode__opt--cut">✂ Cut</span>
@@ -95,7 +109,8 @@
             <b>Video Editor & Creator</b> — Shorts, Reels and YouTube episodes.
           </p>
           <div class="hero__ctas">
-            <a href="#work" class="btn btn--primary magnetic" data-cursor="Go">See my work <span>↘</span></a>
+            <a href="assets/Sameer_Java_Backend_Resume.pdf" download class="btn btn--primary magnetic" data-cursor="Get">Download Resume <span>↓</span></a>
+            <a href="#work" class="btn btn--ghost magnetic" data-cursor="Go">See my work</a>
             <a href="#contact" class="btn btn--ghost magnetic" data-cursor="Hi!">Hire me</a>
           </div>
           </div>
@@ -423,6 +438,39 @@
             <span class="vid__play" aria-hidden="true"></span>
           </a>
         </div>
+
+        <div class="gallery__head gallery__head--more">
+          <h3 class="gallery__sub">More Shorts</h3>
+          <p class="mono"><span class="show-touch">swipe →</span></p>
+        </div>
+        <div class="more" id="moreShorts">
+          <a class="vid vid--short" href="https://youtube.com/@beginwithsam/shorts" target="_blank" rel="noopener" data-cursor="Play">
+            <img src="assets/thumbs/s-hic.jpg" alt="Why Do We Hiccup Short thumbnail" loading="lazy" />
+            <video muted loop playsinline preload="none" data-src="assets/videos/s-hic.mp4"></video>
+            <span class="vid__fmt mono">Short</span><span class="vid__time mono">0:16</span>
+            <div class="vid__meta"><b>Why Do We Hiccup?</b></div>
+            <span class="vid__play" aria-hidden="true"></span>
+          </a>
+          <a class="vid vid--short" href="https://youtube.com/@beginwithsam/shorts" target="_blank" rel="noopener" data-cursor="Play">
+            <img src="assets/thumbs/s-prints.jpg" alt="Fingerprints Short thumbnail" loading="lazy" />
+            <video muted loop playsinline preload="none" data-src="assets/videos/s-prints.mp4"></video>
+            <span class="vid__fmt mono">Short</span><span class="vid__time mono">0:49</span>
+            <div class="vid__meta"><b>Formed Before Birth?!</b></div>
+            <span class="vid__play" aria-hidden="true"></span>
+          </a>
+          <a class="vid vid--short" href="https://youtube.com/@beginwithsam/shorts" target="_blank" rel="noopener" data-cursor="Play">
+            <img src="assets/thumbs/s-roots.jpg" alt="Your Roots Are Growing Short thumbnail" loading="lazy" />
+            <video muted loop playsinline preload="none" data-src="assets/videos/s-roots.mp4"></video>
+            <span class="vid__fmt mono">Short</span><span class="vid__time mono">0:36</span>
+            <div class="vid__meta"><b>Your Roots Are Growing</b></div>
+            <span class="vid__play" aria-hidden="true"></span>
+          </a>
+          <a class="more__all" href="https://youtube.com/@beginwithsam" target="_blank" rel="noopener" data-cursor="Watch">
+            <img src="assets/sam-logo.png" alt="" />
+            <b>Watch all on YouTube</b>
+            <span class="mono">@beginwithsam ↗</span>
+          </a>
+        </div>
       </div>
 
       <!-- Extra YouTube embeds: add video IDs in script.js (VIDEOS array) -->
@@ -514,15 +562,17 @@
     </section>
   </main>
 
+  <a class="float-cta" id="floatCta" href="assets/Sameer_Java_Backend_Resume.pdf" download aria-label="Download resume">📄 Resume</a>
+
   <footer class="footer mono">
     <span>© <span id="year"></span> Mohamad Sameer</span>
+    <span class="footer__visits" title="Total visits to this site"><img src="https://hits.sh/sameeer7.github.io/visits.svg?style=flat-square&amp;label=visits&amp;color=5b8cff&amp;labelColor=11141d&amp;view=total" alt="Visit counter" height="20" /></span>
     <a href="#top" data-cursor="Up">Back to top ↑</a>
   </footer>
 
   <script src="vendor/gsap.min.js"></script>
   <script src="vendor/ScrollTrigger.min.js"></script>
   <script src="vendor/SplitText.min.js"></script>
-  <script src="vendor/ScrambleTextPlugin.min.js"></script>
   <script src="vendor/CustomEase.min.js"></script>
   <script src="vendor/lenis.min.js"></script>
   <script src="script.js"></script>
