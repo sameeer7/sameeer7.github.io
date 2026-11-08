@@ -75,6 +75,26 @@ $("#copyEmail").addEventListener("click", async e => {
   catch (err) { window.location.href = "mailto:" + mail; }
 });
 
+/* ---------------- Resume download → confetti party 🎉 ---------------- */
+const dlToast = document.createElement("div");
+dlToast.className = "dl-toast mono"; dlToast.setAttribute("role", "status"); document.body.appendChild(dlToast);
+// one celebration used for resume downloads and for messages sent through the form
+function party(el, message) {
+  dlToast.textContent = message;
+  dlToast.classList.add("is-on"); clearTimeout(dlToast._t); dlToast._t = setTimeout(() => dlToast.classList.remove("is-on"), 3000);
+  if (reduceMotion || typeof confetti !== "function") return;
+  const r = el.getBoundingClientRect(), colors = ["#5b8cff", "#ffb547", "#3ddc97", "#ff5c8a", "#ffffff"];
+  const origin = { x: (r.left + r.width / 2) / innerWidth, y: (r.top + r.height / 2) / innerHeight };
+  confetti({ particleCount: 110, spread: 80, startVelocity: 45, origin, colors, ticks: 220, zIndex: 1100 });
+  confetti({ particleCount: 30, spread: 120, startVelocity: 30, origin, colors, shapes: ["star"], scalar: 1.3, ticks: 240, zIndex: 1100 });
+  setTimeout(() => {
+    confetti({ particleCount: 70, angle: 60, spread: 65, startVelocity: 55, origin: { x: 0, y: .8 }, colors, zIndex: 1100 });
+    confetti({ particleCount: 70, angle: 120, spread: 65, startVelocity: 55, origin: { x: 1, y: .8 }, colors, zIndex: 1100 });
+  }, 220);
+}
+// the download itself carries on as normal
+$$("a[download]").forEach(link => link.addEventListener("click", () => party(link, "📄 Resume downloading, thanks for checking it out! 🎉")));
+
 /* ---------------- Contact form → Sameer's Gmail (FormSubmit) ---------------- */
 const MAIL_TO = "sameer.mohamad.m@gmail.com";
 const form = $("#contactForm");
@@ -105,6 +125,7 @@ if (form) form.addEventListener("submit", async e => {
     }
     if (!res.ok || String(data.success) !== "true") throw new Error(data.message || "send failed");
     form.reset(); status.className = "cform__status mono ok"; status.textContent = "Sent ✓ Thanks! I'll reply to you soon.";
+    party(btn, "✉️ Message sent! I'll get back to you soon 🎉");
   } catch (err) {
     status.className = "cform__status mono err";
     status.innerHTML = `Couldn't send right now. Please email me at <a href="mailto:${MAIL_TO}" style="text-decoration:underline">${MAIL_TO}</a>`;
@@ -568,78 +589,54 @@ if (!hasGsap) {
     });
   }
 
-  /* ---- Earth → Hyderabad: a real satellite globe that flies to Hyderabad as you scroll ---- */
+  /* ---- Earth → Hyderabad: a pre-rendered satellite flight, scrubbed by scroll ---- */
   (() => {
     const HYD = [78.4867, 17.385];
+    const video = $("#globeVideo"), label = $("#hydLabel");
     const l1 = $(".locate__line--1"), l2 = $(".locate__line--2"), note = $(".locate__note");
     const hudLat = $("#hudLat"), hudLng = $("#hudLng"), hudAlt = $("#hudAlt");
-    const small = () => innerWidth < 760;
-    const ease = k => (k = Math.max(0, Math.min(1, k)), k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+    const portrait = () => innerHeight > innerWidth;
+    const cl = k => Math.max(0, Math.min(1, k));
+    const ease = k => (k = cl(k), k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
     const lerp = (a, b, k) => a + (b - a) * k;
-    let map = null, marker = null, pinEl = null, progress = reduceMotion ? 1 : 0, spin = 0, loading = false;
-
-    // camera path: spinning globe → swing over India → dive to Hyderabad → tilt into 3D
+    // same camera path the video was rendered with, so the readouts match the picture
     const camera = p => {
-      const z0 = small() ? .75 : 1.65, z1 = small() ? 10.6 : 11.3;
-      const kc = ease((p - .06) / .5), kz = ease((p - .16) / .66), kp = ease((p - .5) / .34);
-      return {
-        center: [lerp(-25 + spin, HYD[0], kc), lerp(16, HYD[1], kc)],
-        zoom: lerp(z0, z1, kz),
-        pitch: lerp(0, 58, kp),
-        bearing: lerp(0, -32, ease((p - .5) / .5)),
-      };
+      const z0 = portrait() ? 1.7 : 2.2, z1 = portrait() ? 11.6 : 12.0, kc = ease((p - .06) / .5);
+      return { lng: lerp(-42 + p * 60, HYD[0], kc), lat: lerp(14, HYD[1], kc), zoom: lerp(z0, z1, ease((p - .14) / .7)) + .35 * cl((p - .86) / .14) };
     };
     const fmt = (v, pos, neg) => `${Math.abs(v).toFixed(4)}° ${v >= 0 ? pos : neg}`;
+    let progress = reduceMotion ? 1 : 0, shown = -1, loaded = false;
+
+    const pickSrc = () => `assets/globe/flight-${portrait() ? "port" : "land"}.mp4`;
+    const load = () => {
+      if (loaded) return; loaded = true;
+      video.poster = pickSrc().replace(".mp4", "-poster.jpg");
+      video.src = pickSrc(); video.preload = "auto"; video.load();
+    };
+    // iPhone/Android need one muted play() before seeking works smoothly
+    const unlock = () => { load(); const pr = video.play(); if (pr) pr.then(() => video.pause()).catch(() => {}); };
+    window.addEventListener("touchstart", unlock, { once: true, passive: true });
+    ScrollTrigger.create({ trigger: "#locate", start: "top bottom+=200%", onEnter: load, onEnterBack: load });
+
     const apply = () => {
       const p = progress, c = camera(p);
-      if (map) {
-        map.jumpTo(c);
-        if (pinEl) pinEl.firstChild.style.opacity = Math.max(0, Math.min(1, (c.zoom - 4.5) / 1.5)); // inner wrapper: MapLibre owns the marker's own opacity
-      }
-      hudLat.textContent = fmt(c.center[1], "N", "S");
-      hudLng.textContent = fmt(((c.center[0] + 540) % 360) - 180, "E", "W");
-      hudAlt.textContent = `${Math.round(36000 / Math.pow(2, c.zoom - (small() ? .2 : 1))).toLocaleString("en-IN")} km`;
-      // captions
-      const o1 = 1 - Math.max(0, Math.min(1, (p - .3) / .14)), o2 = Math.max(0, Math.min(1, (p - .7) / .12));
+      hudLat.textContent = fmt(c.lat, "N", "S");
+      hudLng.textContent = fmt(((c.lng + 540) % 360) - 180, "E", "W");
+      hudAlt.textContent = `${Math.round(36000 / Math.pow(2, c.zoom - 1.3)).toLocaleString("en-IN")} km`;
+      const o1 = 1 - cl((p - .3) / .14), o2 = cl((p - .7) / .12), on = cl((p - .84) / .1), ol = cl((p - .66) / .1);
       gsap.set(l1, { opacity: o1, y: (1 - o1) * -30 });
       gsap.set(l2, { opacity: o2, y: (1 - o2) * 30 });
-      gsap.set(note, { opacity: Math.max(0, Math.min(1, (p - .84) / .1)), y: (1 - Math.max(0, Math.min(1, (p - .84) / .1))) * 14 });
+      gsap.set(note, { opacity: on, y: (1 - on) * 14 });
+      gsap.set(label, { opacity: ol, x: (1 - ol) * -12, xPercent: innerWidth <= 760 ? -50 : 0 });
     };
+    // seek the video toward the scroll position every frame (smooth, never piles up seeks)
+    gsap.ticker.add(() => {
+      if (!video.duration) return;
+      const t = Math.min(video.duration - .04, progress * video.duration);
+      if (Math.abs(t - shown) > .02 && !video.seeking) { video.currentTime = t; shown = t; }
+    });
 
-    const style = {
-      version: 8,
-      projection: { type: "globe" },
-      sky: { "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 1, 5, 1, 8, 0] },
-      sources: {
-        sat: {
-          type: "raster", tileSize: 256, maxzoom: 13,
-          tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg"],
-          attribution: "Sentinel-2 cloudless 2020 by EOX (CC BY-NC-SA 4.0)",
-        },
-      },
-      layers: [{ id: "sat", type: "raster", source: "sat", paint: { "raster-fade-duration": 200 } }],
-    };
-    const build = () => {
-      const c = camera(progress);
-      map = new maplibregl.Map({ container: "globe", style, center: c.center, zoom: c.zoom, pitch: c.pitch, bearing: c.bearing,
-        interactive: false, attributionControl: false, maxPitch: 70, fadeDuration: 0 });
-      pinEl = document.createElement("div");
-      pinEl.className = "hyd-pin";
-      pinEl.innerHTML = '<div class="hyd-pin__in" style="opacity:0"><span class="hyd-pin__ring"></span><span class="hyd-pin__ring"></span><span class="hyd-pin__dot"></span><span class="hyd-pin__label">Hyderabad<small>17.3850° N · 78.4867° E</small></span></div>';
-      marker = new maplibregl.Marker({ element: pinEl, anchor: "center" }).setLngLat(HYD).addTo(map);
-      map.on("load", apply);
-      // slow spin while the globe is waiting at the start
-      gsap.ticker.add(() => { if (map && progress < .04 && !reduceMotion) { spin += .06; apply(); } });
-    };
-    // load the map engine only when the visitor gets close to this section
-    const load = () => {
-      if (loading) return; loading = true;
-      const css = document.createElement("link"); css.rel = "stylesheet"; css.href = "vendor/maplibre-gl.css"; document.head.appendChild(css);
-      const js = document.createElement("script"); js.src = "vendor/maplibre-gl.js"; js.onload = build; document.head.appendChild(js);
-    };
-    ScrollTrigger.create({ trigger: "#locate", start: "top bottom+=150%", onEnter: load, onEnterBack: load });
-
-    if (reduceMotion) { apply(); return; }
+    if (reduceMotion) { load(); video.addEventListener("loadedmetadata", () => { video.currentTime = video.duration - .05; }, { once: true }); apply(); return; }
     ScrollTrigger.create({
       trigger: "#locate", pin: "#locateStage", start: "top top", end: () => "+=" + innerHeight * 2.6, scrub: true, anticipatePin: 1,
       onUpdate: self => { progress = self.progress; apply(); },

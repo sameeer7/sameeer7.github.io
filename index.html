@@ -538,7 +538,8 @@
     <section class="locate" id="locate" aria-label="Based in Hyderabad, India">
       <div class="locate__stage" id="locateStage">
         <div class="locate__stars" aria-hidden="true"></div>
-        <div class="locate__map" id="globe" aria-hidden="true"></div>
+        <video class="locate__video" id="globeVideo" muted playsinline preload="none" aria-hidden="true"></video>
+        <div class="locate__label" id="hydLabel" aria-hidden="true"><b>Hyderabad</b><small>17.3850° N · 78.4867° E</small></div>
         <div class="locate__vignette" aria-hidden="true"></div>
         <div class="locate__ui">
           <p class="eyebrow mono">08 — Based in</p>
@@ -553,7 +554,7 @@
           </div>
           <p class="locate__note mono">Open to on-site, hybrid &amp; remote · Immediate joiner</p>
         </div>
-        <p class="locate__credit mono">Imagery: Sentinel-2 cloudless 2020 by <a href="https://s2maps.eu" target="_blank" rel="noopener">EOX</a> (CC BY-NC-SA 4.0)</p>
+        <p class="locate__credit mono">Imagery: Sentinel-2 cloudless 2020 by <a href="https://s2maps.eu" target="_blank" rel="noopener">EOX</a> (CC BY-NC-SA 4.0) · Terrain: Mapzen/AWS Terrain Tiles</p>
       </div>
     </section>
 
@@ -613,6 +614,7 @@
   <script src="vendor/SplitText.min.js"></script>
   <script src="vendor/CustomEase.min.js"></script>
   <script src="vendor/lenis.min.js"></script>
+  <script src="vendor/confetti.browser.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
