@@ -26,8 +26,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="motion-logo.css?v=202611082150" />
-  <link rel="stylesheet" href="style.css?v=202611082150" />
+  <link rel="stylesheet" href="motion-logo.css?v=202611082230" />
+  <link rel="stylesheet" href="style.css?v=202611082230" />
 </head>
 <body>
 
@@ -73,12 +73,15 @@
     </nav>
     <a class="nav__resume js-resume" href="assets/Sameer_Java_Backend_Resume.pdf" download data-cursor="Get">Resume ↓</a>
     <button class="mode" id="modeToggle" aria-label="Switch between engineer and editor mode" data-cursor="Switch">
-      <span class="mode__opt mode__opt--code">&lt;/&gt; Code</span>
-      <span class="mode__opt mode__opt--cut">✂ Cut</span>
+      <span class="mode__invite" aria-hidden="true"></span>
+      <span class="mode__opt mode__opt--code"><span class="mode__ico mode__ico--code" aria-hidden="true"><i>&lt;</i><i>/</i><i>&gt;</i></span> Code</span>
+      <span class="mode__opt mode__opt--cut"><span class="mode__ico mode__ico--cut" aria-hidden="true">✂</span> Cut</span>
       <span class="mode__pill"></span>
     </button>
     <button class="burger" id="burger" aria-label="Open menu"><span></span><span></span></button>
   </header>
+
+  <button class="mode-hint mono" id="modeHint" type="button" aria-label="Switch mode"></button>
 
   <div class="menu" id="menu">
     <a href="#about">About</a><a href="#work" data-only="code">Work</a><a href="#teach" data-only="code">Channel</a><a href="#edit" data-only="cut">Edit Bay</a><a href="#channels" data-only="cut">Channel</a><a href="#skills">Stack</a><a href="#contact">Contact</a>
@@ -586,7 +589,7 @@
           <div class="skill-group"><p>Editing</p><div class="pills"><span>Jump cuts</span><span>Transitions</span><span>Text animation</span><span>Keyframes</span><span>B-roll</span><span>Layering</span></div></div>
           <div class="skill-group"><p>Audio</p><div class="pills"><span>Voice-over</span><span>Music mixing</span><span>Sound effects</span></div></div>
           <div class="skill-group"><p>Design</p><div class="pills"><span>Subtitles</span><span>Thumbnails</span><span>Hook-first intros</span><span>Intro / Outro</span></div></div>
-          <div class="skill-group"><p>Apps &amp; AI</p><div class="pills"><span>CapCut</span><span>InShot</span><span>ElevenLabs</span><span>Google Flow</span></div></div>
+          <div class="skill-group"><p>Apps &amp; AI</p><div class="pills"><span>CapCut</span><span>InShot</span><span>Canva</span><span>ElevenLabs</span><span>Google Flow</span></div></div>
           <div class="skill-group"><p>Content</p><div class="pills"><span>Scriptwriting</span><span>Content planning</span><span>YouTube Analytics</span></div></div>
         </div>
       </div>
@@ -682,7 +685,7 @@
   <script src="vendor/CustomEase.min.js"></script>
   <script src="vendor/lenis.min.js"></script>
   <script src="vendor/confetti.browser.js"></script>
-  <script src="motion-logo.js?v=202611082150"></script>
-  <script src="script.js?v=202611082150"></script>
+  <script src="motion-logo.js?v=202611082230"></script>
+  <script src="script.js?v=202611082230"></script>
 </body>
 </html>

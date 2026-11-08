@@ -27,7 +27,7 @@ const PILL_LOGOS = {
   "Java 8": "java", "Core Java": "java", "Spring Boot": "springboot", "Spring MVC": "spring", "Spring Security": "spring",
   "GraphQL": "graphql", "RabbitMQ": "rabbitmq", "PostgreSQL": "postgresql", "MySQL": "mysql", "Redis (basics)": "redis",
   "Git": "git", "Maven": "maven", "Postman": "postman", "JIRA": "jira", "Docker": "docker", "JUnit": "junit",
-  "Spring Data JPA": "spring", "ElevenLabs": "elevenlabs", "Google Flow": "google", "YouTube Analytics": "youtube",
+  "Spring Data JPA": "spring", "Canva": "canva", "ElevenLabs": "elevenlabs", "Google Flow": "google", "YouTube Analytics": "youtube",
 };
 $$(".pills span").forEach(p => {
   const f = PILL_LOGOS[p.textContent.trim()];
@@ -216,7 +216,7 @@ const RESUME = { code: "assets/Sameer_Java_Backend_Resume.pdf", cut: "assets/Sam
 const setResume = () => $$(".js-resume").forEach(a => a.setAttribute("href", RESUME[root.dataset.mode] || RESUME.code));
 setResume();
 let onModeChange = () => {}; // set up by the GSAP block: scroll to top, re-measure, replay reveals
-const saveMode = () => { try { localStorage.setItem("ms-mode", root.dataset.mode); } catch (e) {} fitSwap(); setResume(); onModeChange(); };
+const saveMode = () => { try { localStorage.setItem("ms-mode", root.dataset.mode); } catch (e) {} fitSwap(); setResume(); onModeChange(); inviteAfterSwitch(); };
 // "build backends" / "cut stories": size the slot to the visible phrase so there's no gap
 function fitSwap() {
   const active = $(root.dataset.mode === "cut" ? ".swap__b" : ".swap__a");
@@ -246,6 +246,76 @@ $("#modeToggle").addEventListener("click", e => {
     .fromTo(wipe, { clipPath: "inset(0% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 100% 0%)", duration: .7, ease: "hop" }, "-=.15")
     .fromTo(".bg-glow", { scale: .8, opacity: .4 }, { scale: 1, opacity: 1, duration: 1, ease: "expo.out" }, "<");
 });
+
+/* ---------------- Switch invite: the other side asks to be clicked ---------------- */
+// Code mode → the ✂ Cut side snips + glows amber; Cut mode → the </> Code side bounces + glows blue.
+const modeBtn = $("#modeToggle"), modeHint = $("#modeHint");
+const HINT_TXT = { code: "<b>✂</b>I'm also a video editor. <u>Peek →</u>", cut: "<b>&lt;/&gt;</b>See the developer side. <u>Switch →</u>" };
+let hasSwitched = false, hintShows = 0, inviteTl = null;
+try { hasSwitched = localStorage.getItem("ms-switched") === "1"; } catch (e) {}
+const otherOpt = () => $(root.dataset.mode === "code" ? ".mode__opt--cut" : ".mode__opt--code");
+function placeHint() {
+  const r = otherOpt().getBoundingClientRect(), w = modeHint.offsetWidth, cx = r.left + r.width / 2;
+  const left = Math.max(12, Math.min(innerWidth - w - 12, cx - w / 2));
+  modeHint.style.left = left + "px"; modeHint.style.top = r.bottom + 14 + "px"; modeHint.style.setProperty("--ax", cx - left + "px");
+}
+function hideHint() { if (!window.gsap) return; gsap.killTweensOf(modeHint); gsap.to(modeHint, { opacity: 0, y: -6, duration: .25, onComplete: () => gsap.set(modeHint, { visibility: "hidden" }) }); }
+function showHint() {
+  if (!window.gsap || reduceMotion || hasSwitched || hintShows >= 2 || scrollY > 150 || document.body.classList.contains("is-loading")) return;
+  hintShows++; modeHint.innerHTML = HINT_TXT[root.dataset.mode]; placeHint();
+  gsap.killTweensOf(modeHint);
+  gsap.timeline()
+    .set(modeHint, { visibility: "visible" })
+    .fromTo(modeHint, { opacity: 0, y: -12, scale: .8, transformOrigin: "50% 0" }, { opacity: 1, y: 0, scale: 1, duration: .7, ease: "back.out(2.4)" })
+    .to(modeHint, { y: -3, duration: .5, yoyo: true, repeat: 7, ease: "sine.inOut" })
+    .to(modeHint, { opacity: 0, y: -8, duration: .4 })
+    .set(modeHint, { visibility: "hidden" });
+}
+function buildInvite() {
+  if (!window.gsap || reduceMotion) return;
+  inviteTl && inviteTl.kill();
+  const toCut = root.dataset.mode === "code", rgb = toCut ? "255,181,71" : "91,140,255";
+  inviteTl = gsap.timeline({ repeat: -1, repeatDelay: hasSwitched ? 7 : 2.6, delay: .8 })
+    .fromTo(".mode__invite", { boxShadow: `0 0 0 0 rgba(${rgb},.7)` }, { boxShadow: `0 0 0 12px rgba(${rgb},0)`, duration: 1.2, ease: "power2.out" }, 0);
+  if (toCut) { // snip-snip
+    const sc = $(".mode__ico--cut");
+    inviteTl.to(sc, { rotate: -30, scale: 1.4, duration: .13, ease: "power2.out" }, 0)
+      .to(sc, { rotate: 0, scale: 1.1, duration: .11, ease: "power2.in" })
+      .to(sc, { rotate: -30, scale: 1.4, duration: .13, ease: "power2.out" })
+      .to(sc, { rotate: 0, scale: 1, duration: .6, ease: "elastic.out(1, .4)" });
+  } else { // brackets breathe apart, slash tilts
+    const [a, sl, b] = $$(".mode__ico--code i");
+    inviteTl.to(a, { x: -4, duration: .25, ease: "power2.out" }, 0).to(b, { x: 4, duration: .25, ease: "power2.out" }, 0)
+      .to(sl, { rotate: 25, scale: 1.25, duration: .25, ease: "power2.out" }, 0)
+      .to([a, sl, b], { x: 0, rotate: 0, scale: 1, duration: .7, ease: "elastic.out(1, .4)" }, .3);
+  }
+}
+// hover: sparks fly from the scissors, or 0s and 1s float up from the code side
+function burst() {
+  if (!window.gsap || reduceMotion) return;
+  const toCut = root.dataset.mode === "code", opt = otherOpt(), b = modeBtn.getBoundingClientRect(), o = opt.getBoundingClientRect();
+  for (let i = 0; i < 6; i++) {
+    const s = document.createElement("span"); s.className = "mode-bit";
+    s.textContent = toCut ? (i % 2 ? "✦" : "·") : (Math.random() > .5 ? "1" : "0");
+    s.style.color = toCut ? "#ffb547" : "#8fb2ff";
+    s.style.left = (o.left - b.left + 10 + Math.random() * (o.width - 20)) + "px"; s.style.top = (o.top - b.top + o.height / 2 - 6) + "px";
+    modeBtn.appendChild(s);
+    gsap.to(s, toCut
+      ? { x: gsap.utils.random(-26, 26), y: gsap.utils.random(-24, 24), rotate: gsap.utils.random(-90, 90), opacity: 0, scale: 1.6, duration: .7, ease: "power3.out", onComplete: () => s.remove() }
+      : { y: gsap.utils.random(-34, -20), x: gsap.utils.random(-6, 6), opacity: 0, duration: .9, delay: i * .05, ease: "power2.out", onComplete: () => s.remove() });
+  }
+  const sc = $(".mode__ico--cut");
+  if (toCut) gsap.fromTo(sc, { rotate: -35, scale: 1.45 }, { rotate: 0, scale: 1, duration: .6, ease: "elastic.out(1, .35)" });
+}
+modeBtn.addEventListener("pointerenter", burst);
+modeHint.addEventListener("click", () => { hideHint(); modeBtn.click(); });
+window.addEventListener("scroll", () => { if (scrollY > 150 && modeHint.style.visibility === "visible") hideHint(); }, { passive: true });
+window.addEventListener("resize", () => { if (modeHint.style.visibility === "visible") placeHint(); });
+window.addEventListener("site:ready", () => { buildInvite(); setTimeout(showHint, 2200); setTimeout(showHint, 22000); });
+function inviteAfterSwitch() {
+  hasSwitched = true; try { localStorage.setItem("ms-switched", "1"); } catch (e) {}
+  hideHint(); buildInvite();
+}
 
 /* ==========================================================
    GSAP animations
@@ -306,7 +376,7 @@ if (!hasGsap) {
     .to(".loader__top, .loader__bottom", { opacity: 0, duration: .3, ease: "power2.out" }, "<") // nothing lingers on the curtain
     .to(".loader__curtain", { scaleY: 1, duration: .6, ease: "hop" }, "-=.4")
     .to("#loader", { yPercent: -100, duration: 1, ease: "hop" })
-    .add(() => { $("#loader").remove(); document.body.classList.remove("is-loading"); lenis && lenis.start(); ScrollTrigger.refresh(); })
+    .add(() => { $("#loader").remove(); document.body.classList.remove("is-loading"); lenis && lenis.start(); ScrollTrigger.refresh(); window.dispatchEvent(new Event("site:ready")); })
     .add(heroIntro(), "-=.6");
 
   function heroIntro() {
