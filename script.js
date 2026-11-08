@@ -309,6 +309,7 @@ function burst() {
 }
 modeBtn.addEventListener("pointerenter", burst);
 modeHint.addEventListener("click", () => { hideHint(); modeBtn.click(); });
+$$("[data-switch]").forEach(b => b.addEventListener("click", () => modeBtn.click()));
 window.addEventListener("scroll", () => { if (scrollY > 150 && modeHint.style.visibility === "visible") hideHint(); }, { passive: true });
 window.addEventListener("resize", () => { if (modeHint.style.visibility === "visible") placeHint(); });
 window.addEventListener("site:ready", () => { buildInvite(); setTimeout(showHint, 2200); setTimeout(showHint, 22000); });
@@ -365,17 +366,21 @@ if (!hasGsap) {
 
   /* ---- Preloader: the "Code → Cut" motion logo (motion-logo.js) ---- */
   const counter = { v: 0 };
+  let seenBefore = false;
+  try { seenBefore = localStorage.getItem("ms-seen") === "1"; localStorage.setItem("ms-seen", "1"); } catch (e) {}
+  const quick = seenBefore || reduceMotion;
   const logoTl = window.MotionLogo ? MotionLogo($("#loaderLogo")) : gsap.timeline();
+  logoTl.timeScale(quick ? 3 : 1.5);
   gsap.timeline()
     .add(logoTl, 0)
-    .to(counter, { v: 100, duration: reduceMotion ? .2 : 2.2, ease: "power2.inOut", onUpdate: () => {
+    .to(counter, { v: 100, duration: reduceMotion ? .2 : quick ? .75 : 1.55, ease: "power2.inOut", onUpdate: () => {
       $("#loaderCount").textContent = String(Math.round(counter.v)).padStart(3, "0");
       $("#loaderBar").style.width = counter.v + "%";
     } }, 0)
-    .to("#loaderLogo", { scale: 1.08, opacity: 0, filter: "blur(8px)", duration: .4, ease: "power2.in" }, "+=.3")
+    .to("#loaderLogo", { scale: 1.08, opacity: 0, filter: "blur(8px)", duration: .35, ease: "power2.in" }, quick ? "+=.02" : "+=.15")
     .to(".loader__top, .loader__bottom", { opacity: 0, duration: .3, ease: "power2.out" }, "<") // nothing lingers on the curtain
-    .to(".loader__curtain", { scaleY: 1, duration: .6, ease: "hop" }, "-=.4")
-    .to("#loader", { yPercent: -100, duration: 1, ease: "hop" })
+    .to(".loader__curtain", { scaleY: 1, duration: .5, ease: "hop" }, "-=.35")
+    .to("#loader", { yPercent: -100, duration: .8, ease: "hop" })
     .add(() => { $("#loader").remove(); document.body.classList.remove("is-loading"); lenis && lenis.start(); ScrollTrigger.refresh(); window.dispatchEvent(new Event("site:ready")); })
     .add(heroIntro(), "-=.6");
 
@@ -387,7 +392,7 @@ if (!hasGsap) {
       .to(".viewfinder__img img", { scale: 1, duration: 2, ease: "expo.out" }, "<")
       .from(".vf-corner", { scale: 0, opacity: 0, duration: .6, stagger: .08, ease: "back.out(2)" }, "-=1")
       .from(".vf-tag", { y: 20, opacity: 0, duration: .8 }, "-=.8")
-      .from(".hero__lead, .hero__sub, .hero__ctas, .hero__scroll", { y: 30, opacity: 0, duration: 1.1, stagger: .08 }, "-=1.3")
+      .from(".hero__lead, .hero__sub, .hero__ctas, .hero__switch, .hero__scroll", { y: 30, opacity: 0, duration: 1.1, stagger: .08 }, "-=1.3")
       .from(".hero__meta span", { y: 14, opacity: 0, duration: .8, stagger: .08 }, "<")
       .fromTo(".nav", { yPercent: -100, y: 0, opacity: 0 }, { yPercent: 0, y: 0, opacity: 1, duration: .9, clearProps: "transform,translate" }, .3);
     return tl;
@@ -696,7 +701,7 @@ if (!hasGsap) {
     // the hero re-enters for the new side: letters wave, then the new lines rise in
     const vis = el => el && getComputedStyle(el).display !== "none";
     gsap.fromTo(heroChars.flat(), { yPercent: 0 }, { keyframes: [{ yPercent: -18, duration: .22, ease: "power2.out" }, { yPercent: 0, duration: .6, ease: "elastic.out(1, .4)" }], stagger: .025, delay: .55 });
-    gsap.from([...$$(".hero__sub")].filter(vis).concat($$(".hero__ctas > *").filter(vis)), { y: 26, opacity: 0, filter: "blur(6px)", duration: .9, stagger: .07, delay: .7, clearProps: "filter" });
+    gsap.from([...$$(".hero__sub")].filter(vis).concat($$(".hero__ctas > *").filter(vis), $$(".hero__switch").filter(vis)), { y: 26, opacity: 0, filter: "blur(6px)", duration: .9, stagger: .07, delay: .7, clearProps: "filter" });
     gsap.from(".marquee", { opacity: 0, y: 30, duration: 1, delay: .8 });
   };
 
