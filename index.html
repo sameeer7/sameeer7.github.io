@@ -90,7 +90,7 @@
     <section class="hero">
       <div class="hero__meta mono">
         <span><i class="dot"></i> Open to work · Immediate joiner</span>
-        <span>Hyderabad, India</span>
+        <a href="#locate" class="hero__loc" data-cursor="Fly">📍 Hyderabad, India</a>
       </div>
 
       <div class="hero__grid">
@@ -534,14 +534,52 @@
       </div>
     </section>
 
+    <!-- ============ LOCATION: Earth → Hyderabad ============ -->
+    <section class="locate" id="locate" aria-label="Based in Hyderabad, India">
+      <div class="locate__stage" id="locateStage">
+        <div class="locate__stars" aria-hidden="true"></div>
+        <div class="locate__map" id="globe" aria-hidden="true"></div>
+        <div class="locate__vignette" aria-hidden="true"></div>
+        <div class="locate__ui">
+          <p class="eyebrow mono">08 — Based in</p>
+          <h2 class="locate__title">
+            <span class="locate__line locate__line--1">From anywhere on Earth…</span>
+            <span class="locate__line locate__line--2">…to <em>Hyderabad</em>, India.</span>
+          </h2>
+          <div class="locate__hud mono">
+            <span><b>LAT</b> <i id="hudLat">20.0000° N</i></span>
+            <span><b>LNG</b> <i id="hudLng">30.0000° E</i></span>
+            <span><b>ALT</b> <i id="hudAlt">20,000 km</i></span>
+          </div>
+          <p class="locate__note mono">Open to on-site, hybrid &amp; remote · Immediate joiner</p>
+        </div>
+        <p class="locate__credit mono">Imagery: Sentinel-2 cloudless 2020 by <a href="https://s2maps.eu" target="_blank" rel="noopener">EOX</a> (CC BY-NC-SA 4.0)</p>
+      </div>
+    </section>
+
     <!-- ============ CONTACT ============ -->
     <section class="contact section" id="contact">
-      <p class="eyebrow mono">08 — Contact</p>
+      <p class="eyebrow mono">09 — Contact</p>
       <h2 class="contact__big">
         <span class="line"><span class="split">Let's build</span></span>
         <span class="line"><span class="split outline">something.</span></span>
       </h2>
       <p class="section__lead">Hiring a Java backend developer or need an editor for Shorts, Reels or YouTube? I can join immediately.</p>
+
+      <!-- Contact form: messages are emailed to Sameer via FormSubmit -->
+      <form class="cform" id="contactForm" novalidate>
+        <div class="cform__row">
+          <label class="cform__field"><span class="mono">Your name</span><input name="name" type="text" autocomplete="name" required maxlength="80" placeholder="Priya Sharma" /></label>
+          <label class="cform__field"><span class="mono">Your email</span><input name="email" type="email" autocomplete="email" required maxlength="120" placeholder="priya@company.com" /></label>
+        </div>
+        <label class="cform__field"><span class="mono">Company / role <em>(optional)</em></span><input name="company" type="text" maxlength="120" placeholder="Acme Corp · Java Backend Developer" /></label>
+        <label class="cform__field"><span class="mono">Message</span><textarea name="message" rows="4" required maxlength="3000" placeholder="Hi Sameer, we have an opening for…"></textarea></label>
+        <input type="text" name="_honey" class="cform__hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <div class="cform__foot">
+          <button class="btn btn--primary cform__send magnetic" type="submit" data-cursor="Send">Send message <span>→</span></button>
+          <p class="cform__status mono" id="formStatus" role="status" aria-live="polite"></p>
+        </div>
+      </form>
 
       <button class="email magnetic" id="copyEmail" data-cursor="Copy">
         <span class="email__text">sameer.mohamad.m@gmail.com</span>

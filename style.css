@@ -637,3 +637,72 @@ html[data-mode="cut"] .swap__b { transform: translateY(0); opacity: 1; }
 @media (max-width: 760px) {
   .chip--1, .chip--3 { left: 6px; } .chip--2, .chip--4 { right: 6px; }
 }
+
+/* ==========================================================
+   v5 — Earth → Hyderabad globe (MapLibre GL, scroll-scrubbed)
+   ========================================================== */
+.hero__loc { color: inherit; transition: color .3s; }
+.hero__loc:hover { color: var(--accent); }
+.locate { position: relative; }
+.locate__stage { position: relative; height: 100vh; height: 100svh; overflow: hidden; background: #020308; }
+.locate__stars { position: absolute; inset: -10%; pointer-events: none;
+  background-image:
+    radial-gradient(1.2px 1.2px at 12% 18%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 28% 72%, #cfd8ff 50%, transparent 52%),
+    radial-gradient(1.4px 1.4px at 46% 34%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 63% 81%, #fff 50%, transparent 52%),
+    radial-gradient(1.2px 1.2px at 77% 22%, #ffe9c4 50%, transparent 52%), radial-gradient(1px 1px at 88% 58%, #fff 50%, transparent 52%),
+    radial-gradient(1px 1px at 6% 52%, #fff 50%, transparent 52%), radial-gradient(1.3px 1.3px at 38% 90%, #dfe6ff 50%, transparent 52%),
+    radial-gradient(1px 1px at 55% 9%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 93% 88%, #fff 50%, transparent 52%);
+  background-size: 420px 420px; opacity: .75; }
+.locate__stage .locate__map { position: absolute; inset: 0; width: 100%; height: 100%; } /* beats .maplibregl-map { position: relative } */
+.locate__map canvas { outline: none; }
+.locate__vignette { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(2,3,8,.75) 100%), linear-gradient(180deg, rgba(7,8,12,.85), transparent 22%, transparent 70%, rgba(7,8,12,.9)); }
+.locate__ui { position: absolute; inset: 0; padding: clamp(90px, 13vh, 150px) var(--pad) 0; pointer-events: none; z-index: 2; }
+.locate__title { position: relative; font: 800 clamp(38px, 6.4vw, 96px) var(--display); letter-spacing: -.045em; line-height: .95; max-width: 13ch; min-height: 2.1em; }
+.locate__line { position: absolute; left: 0; top: 0; display: block; text-shadow: 0 4px 30px rgba(0,0,0,.6); }
+.locate__line--2 { opacity: 0; }
+.locate__line em { font-style: italic; color: var(--accent); transition: color .5s; }
+.locate__hud { position: absolute; left: var(--pad); bottom: clamp(70px, 10vh, 110px); z-index: 2; display: flex; flex-wrap: wrap; gap: 10px 22px; color: #c9cfdd; pointer-events: none; }
+.locate__hud span { padding: 8px 12px; border-radius: 10px; background: rgba(7,8,12,.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.1); }
+.locate__hud b { color: var(--accent); font-weight: 600; margin-right: 6px; transition: color .5s; }
+.locate__hud i { font-style: normal; font-variant-numeric: tabular-nums; }
+.locate__note { position: absolute; right: var(--pad); bottom: clamp(70px, 10vh, 110px); z-index: 2; color: var(--text); padding: 10px 16px; border-radius: 99px; border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent); background: rgba(7,8,12,.6); opacity: 0; transform: translateY(14px); }
+.locate__credit { position: absolute; right: 12px; bottom: 10px; z-index: 2; font-size: 10px; color: rgba(255,255,255,.45); }
+.locate__credit a { text-decoration: underline; }
+.locate .maplibregl-ctrl-attrib, .locate .maplibregl-ctrl-logo { display: none !important; }
+
+/* the Hyderabad pin */
+.hyd-pin { position: relative; width: 22px; height: 22px; }
+.hyd-pin__dot { position: absolute; inset: 5px; border-radius: 50%; background: var(--cut); box-shadow: 0 0 0 3px rgba(0,0,0,.35), 0 0 22px var(--cut); }
+.hyd-pin__ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--cut); animation: hydPulse 1.8s ease-out infinite; }
+.hyd-pin__ring:nth-child(2) { animation-delay: .9s; }
+.hyd-pin__label { position: absolute; left: 30px; top: 50%; transform: translateY(-50%); white-space: nowrap; padding: 6px 12px; border-radius: 99px; background: rgba(7,8,12,.8); border: 1px solid rgba(255,181,71,.6); color: #fff; font: 700 14px var(--body); }
+.hyd-pin__label small { display: block; font: 500 10px var(--mono); color: var(--cut); letter-spacing: .06em; }
+@keyframes hydPulse { from { transform: scale(.6); opacity: 1; } to { transform: scale(3.4); opacity: 0; } }
+
+@media (max-width: 760px) {
+  .locate__hud { left: var(--pad); right: var(--pad); bottom: 120px; gap: 8px; font-size: 10.5px; }
+  .locate__note { left: var(--pad); right: auto; bottom: 64px; font-size: 11px; }
+  .locate__title { min-height: 2.2em; }
+}
+.hyd-pin__in { position: absolute; inset: 0; transition: opacity .3s; }
+
+/* contact form */
+.cform { display: grid; gap: 14px; max-width: 820px; margin: -8px 0 56px; padding: clamp(20px, 3vw, 32px); border-radius: 22px; background: var(--panel); border: 1px solid var(--line); }
+.cform__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cform__field { display: grid; gap: 8px; }
+.cform__field span { color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.cform__field em { font-style: normal; text-transform: none; opacity: .7; }
+.cform input, .cform textarea { width: 100%; font: 500 16px var(--body); color: var(--text); background: rgba(255,255,255,.03); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; outline: none; resize: vertical; transition: border-color .3s, box-shadow .3s, background .3s; }
+.cform input::placeholder, .cform textarea::placeholder { color: #565b6a; }
+.cform input:focus, .cform textarea:focus { border-color: var(--accent); background: rgba(255,255,255,.05); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent); }
+.cform .is-bad { border-color: #ff5c5c; }
+.cform__hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.cform__foot { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.cform__send[disabled] { opacity: .6; pointer-events: none; }
+.cform__status { color: var(--muted); }
+.cform__status.ok { color: var(--green); }
+.cform__status.err { color: #ff7a7a; }
+@media (max-width: 760px) {
+  .cform__row { grid-template-columns: 1fr; }
+  .hyd-pin__label { left: 50%; top: -44px; transform: translateX(-50%); }
+}

@@ -75,6 +75,38 @@ $("#copyEmail").addEventListener("click", async e => {
   catch (err) { window.location.href = "mailto:" + mail; }
 });
 
+/* ---------------- Contact form → Sameer's Gmail (FormSubmit) ---------------- */
+const MAIL_TO = "sameer.mohamad.m@gmail.com";
+const form = $("#contactForm");
+if (form) form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const status = $("#formStatus"), btn = form.querySelector(".cform__send");
+  const f = Object.fromEntries(new FormData(form));
+  if (f._honey) return; // bots fill the hidden field
+  const bad = [];
+  if (!f.name.trim()) bad.push("name");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim())) bad.push("email");
+  if (f.message.trim().length < 5) bad.push("message");
+  $$("input, textarea", form).forEach(el => el.classList.toggle("is-bad", bad.includes(el.name)));
+  if (bad.length) { status.className = "cform__status mono err"; status.textContent = "Please fill in your " + bad.join(", ") + "."; return; }
+  btn.disabled = true; status.className = "cform__status mono"; status.textContent = "Sending…";
+  try {
+    const res = await fetch("https://formsubmit.co/ajax/" + MAIL_TO, {
+      method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        name: f.name.trim(), email: f.email.trim(), company: f.company.trim() || "-", message: f.message.trim(),
+        _subject: "Portfolio: new message from " + f.name.trim(), _replyto: f.email.trim(), _template: "table", _captcha: "false",
+      }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || String(data.success) !== "true") throw new Error(data.message || "send failed");
+    form.reset(); status.className = "cform__status mono ok"; status.textContent = "Sent ✓ Thanks! I'll reply to you soon.";
+  } catch (err) {
+    status.className = "cform__status mono err";
+    status.innerHTML = `Couldn't send right now. Please email me at <a href="mailto:${MAIL_TO}" style="text-decoration:underline">${MAIL_TO}</a>`;
+  } finally { btn.disabled = false; }
+});
+
 /* ---------------- Mobile menu ---------------- */
 const burger = $("#burger"), menu = $("#menu");
 burger.addEventListener("click", () => { burger.classList.toggle("is-open"); menu.classList.toggle("is-open"); });
@@ -502,7 +534,7 @@ if (!hasGsap) {
   /* ---- Contact ---- */
   gsap.set(contactChars.flat(), { yPercent: 115, rotate: 6 });
   gsap.to(contactChars.flat(), { yPercent: 0, rotate: 0, duration: 1.3, stagger: .025, ease: "expo.out", scrollTrigger: { trigger: ".contact__big", start: "top 85%" } });
-  gsap.from(".email, .contact__links a, .resume", { y: 40, opacity: 0, duration: 1, stagger: .06, scrollTrigger: { trigger: ".email", start: "top 92%" } });
+  gsap.from(".cform, .email, .contact__links a, .resume", { y: 40, opacity: 0, duration: 1, stagger: .06, scrollTrigger: { trigger: ".email", start: "top 92%" } });
   gsap.from(".footer > *", { y: 20, opacity: 0, duration: .8, stagger: .1, scrollTrigger: { trigger: ".footer", start: "top 98%" } });
 
   /* ---- Custom cursor, spotlight + magnetic buttons ---- */
@@ -531,6 +563,85 @@ if (!hasGsap) {
       el.addEventListener("pointerleave", () => gsap.to(el, { x: 0, y: 0, duration: .9, ease: "elastic.out(1, .4)" }));
     });
   }
+
+  /* ---- Earth → Hyderabad: a real satellite globe that flies to Hyderabad as you scroll ---- */
+  (() => {
+    const HYD = [78.4867, 17.385];
+    const l1 = $(".locate__line--1"), l2 = $(".locate__line--2"), note = $(".locate__note");
+    const hudLat = $("#hudLat"), hudLng = $("#hudLng"), hudAlt = $("#hudAlt");
+    const small = () => innerWidth < 760;
+    const ease = k => (k = Math.max(0, Math.min(1, k)), k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+    const lerp = (a, b, k) => a + (b - a) * k;
+    let map = null, marker = null, pinEl = null, progress = reduceMotion ? 1 : 0, spin = 0, loading = false;
+
+    // camera path: spinning globe → swing over India → dive to Hyderabad → tilt into 3D
+    const camera = p => {
+      const z0 = small() ? .75 : 1.65, z1 = small() ? 10.6 : 11.3;
+      const kc = ease((p - .06) / .5), kz = ease((p - .16) / .66), kp = ease((p - .5) / .34);
+      return {
+        center: [lerp(-25 + spin, HYD[0], kc), lerp(16, HYD[1], kc)],
+        zoom: lerp(z0, z1, kz),
+        pitch: lerp(0, 58, kp),
+        bearing: lerp(0, -32, ease((p - .5) / .5)),
+      };
+    };
+    const fmt = (v, pos, neg) => `${Math.abs(v).toFixed(4)}° ${v >= 0 ? pos : neg}`;
+    const apply = () => {
+      const p = progress, c = camera(p);
+      if (map) {
+        map.jumpTo(c);
+        if (pinEl) pinEl.firstChild.style.opacity = Math.max(0, Math.min(1, (c.zoom - 4.5) / 1.5)); // inner wrapper: MapLibre owns the marker's own opacity
+      }
+      hudLat.textContent = fmt(c.center[1], "N", "S");
+      hudLng.textContent = fmt(((c.center[0] + 540) % 360) - 180, "E", "W");
+      hudAlt.textContent = `${Math.round(36000 / Math.pow(2, c.zoom - (small() ? .2 : 1))).toLocaleString("en-IN")} km`;
+      // captions
+      const o1 = 1 - Math.max(0, Math.min(1, (p - .3) / .14)), o2 = Math.max(0, Math.min(1, (p - .7) / .12));
+      gsap.set(l1, { opacity: o1, y: (1 - o1) * -30 });
+      gsap.set(l2, { opacity: o2, y: (1 - o2) * 30 });
+      gsap.set(note, { opacity: Math.max(0, Math.min(1, (p - .84) / .1)), y: (1 - Math.max(0, Math.min(1, (p - .84) / .1))) * 14 });
+    };
+
+    const style = {
+      version: 8,
+      projection: { type: "globe" },
+      sky: { "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 1, 5, 1, 8, 0] },
+      sources: {
+        sat: {
+          type: "raster", tileSize: 256, maxzoom: 13,
+          tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg"],
+          attribution: "Sentinel-2 cloudless 2020 by EOX (CC BY-NC-SA 4.0)",
+        },
+      },
+      layers: [{ id: "sat", type: "raster", source: "sat", paint: { "raster-fade-duration": 200 } }],
+    };
+    const build = () => {
+      const c = camera(progress);
+      map = new maplibregl.Map({ container: "globe", style, center: c.center, zoom: c.zoom, pitch: c.pitch, bearing: c.bearing,
+        interactive: false, attributionControl: false, maxPitch: 70, fadeDuration: 0 });
+      pinEl = document.createElement("div");
+      pinEl.className = "hyd-pin";
+      pinEl.innerHTML = '<div class="hyd-pin__in" style="opacity:0"><span class="hyd-pin__ring"></span><span class="hyd-pin__ring"></span><span class="hyd-pin__dot"></span><span class="hyd-pin__label">Hyderabad<small>17.3850° N · 78.4867° E</small></span></div>';
+      marker = new maplibregl.Marker({ element: pinEl, anchor: "center" }).setLngLat(HYD).addTo(map);
+      map.on("load", apply);
+      // slow spin while the globe is waiting at the start
+      gsap.ticker.add(() => { if (map && progress < .04 && !reduceMotion) { spin += .06; apply(); } });
+    };
+    // load the map engine only when the visitor gets close to this section
+    const load = () => {
+      if (loading) return; loading = true;
+      const css = document.createElement("link"); css.rel = "stylesheet"; css.href = "vendor/maplibre-gl.css"; document.head.appendChild(css);
+      const js = document.createElement("script"); js.src = "vendor/maplibre-gl.js"; js.onload = build; document.head.appendChild(js);
+    };
+    ScrollTrigger.create({ trigger: "#locate", start: "top bottom+=150%", onEnter: load, onEnterBack: load });
+
+    if (reduceMotion) { apply(); return; }
+    ScrollTrigger.create({
+      trigger: "#locate", pin: "#locateStage", start: "top top", end: () => "+=" + innerHeight * 2.6, scrub: true, anticipatePin: 1,
+      onUpdate: self => { progress = self.progress; apply(); },
+    });
+    apply();
+  })();
 
   /* ---- Phones: touch + motion-sensor versions of the hover effects ---- */
   if (isTouch && !reduceMotion) {
