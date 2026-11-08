@@ -99,6 +99,10 @@ if (form) form.addEventListener("submit", async e => {
       }),
     });
     const data = await res.json().catch(() => ({}));
+    if (/activat/i.test(data.message || "")) { // first-time setup: FormSubmit is waiting for Sameer to click its activation email
+      status.className = "cform__status mono err"; status.textContent = "Almost ready: the inbox owner still needs to activate this form. Please email me directly for now.";
+      return;
+    }
     if (!res.ok || String(data.success) !== "true") throw new Error(data.message || "send failed");
     form.reset(); status.className = "cform__status mono ok"; status.textContent = "Sent ✓ Thanks! I'll reply to you soon.";
   } catch (err) {
