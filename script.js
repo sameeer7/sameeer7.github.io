@@ -297,6 +297,7 @@ if (!hasGsap) {
     } }, 0)
     .to(".loader__name span", { yPercent: -230, duration: .7, stagger: .04, ease: "expo.in" }, "+=.1")
     .to(".loader__role span", { yPercent: -110, duration: .5, stagger: .05, ease: "expo.in" }, "<")
+    .to(".loader__top, .loader__bottom, .loader__role", { opacity: 0, duration: .3, ease: "power2.out" }, "<") // nothing lingers on the curtain
     .to(".loader__curtain", { scaleY: 1, duration: .6, ease: "hop" }, "-=.4")
     .to("#loader", { yPercent: -100, duration: 1, ease: "hop" })
     .add(() => { $("#loader").remove(); document.body.classList.remove("is-loading"); lenis && lenis.start(); ScrollTrigger.refresh(); })
