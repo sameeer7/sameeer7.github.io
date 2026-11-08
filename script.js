@@ -311,7 +311,6 @@ if (!hasGsap) {
       .to(".viewfinder__img img", { scale: 1, duration: 2, ease: "expo.out" }, "<")
       .from(".vf-corner", { scale: 0, opacity: 0, duration: .6, stagger: .08, ease: "back.out(2)" }, "-=1")
       .from(".vf-tag", { y: 20, opacity: 0, duration: .8 }, "-=.8")
-      .from(".chip", { y: 30, scale: .7, opacity: 0, duration: .9, stagger: .1, ease: "back.out(1.7)" }, "-=.7")
       .from(".hero__lead, .hero__sub, .hero__ctas, .hero__scroll", { y: 30, opacity: 0, duration: 1.1, stagger: .08 }, "-=1.3")
       .from(".hero__meta span", { y: 14, opacity: 0, duration: .8, stagger: .08 }, "<")
       .fromTo(".nav", { yPercent: -100, y: 0, opacity: 0 }, { yPercent: 0, y: 0, opacity: 1, duration: .9, clearProps: "transform,translate" }, .3);
@@ -333,7 +332,6 @@ if (!hasGsap) {
   });
 
   /* ---- Hero: 3D photo follows the mouse, chips float at different depths ---- */
-  $$(".chip").forEach((c, i) => gsap.to(c, { y: i % 2 ? 10 : -10, duration: 2.4 + i * .3, repeat: -1, yoyo: true, ease: "sine.inOut" }));
   if (!isTouch && !reduceMotion) {
     const vf = $("#vfInner"), hero = $(".hero");
     const rX = gsap.quickTo(vf, "rotationX", { duration: .9, ease: "power3" }), rY = gsap.quickTo(vf, "rotationY", { duration: .9, ease: "power3" });
