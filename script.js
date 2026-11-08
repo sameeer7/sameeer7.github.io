@@ -230,6 +230,7 @@ $("#modeToggle").addEventListener("click", e => {
   const next = root.dataset.mode === "code" ? "cut" : "code";
   if (!hasGsap || reduceMotion) { root.dataset.mode = next; saveMode(); return; }
   if (switching) return; switching = true;
+  window.__lenis && window.__lenis.stop(); // no scrolling while the screen is covered
 
   // full-screen circular wipe in the new colour, starting from the toggle
   const r = e.currentTarget.getBoundingClientRect();
@@ -238,7 +239,7 @@ $("#modeToggle").addEventListener("click", e => {
   wipe.style.background = getComputedStyle(root).getPropertyValue(next === "cut" ? "--cut" : "--code");
   label.textContent = next === "cut" ? "Editor" : "Engineer";
   const chars = splitChars(label);
-  gsap.timeline({ onComplete: () => { switching = false; gsap.set(wipe, { clearProps: "clipPath" }); } })
+  gsap.timeline({ onComplete: () => { switching = false; gsap.set(wipe, { clearProps: "clipPath" }); window.__lenis && window.__lenis.start(); } })
     .fromTo(wipe, { clipPath: `circle(0% at ${at})` }, { clipPath: `circle(150% at ${at})`, duration: .8, ease: "hop" })
     .from(chars, { yPercent: 120, rotate: 8, opacity: 0, duration: .55, stagger: .03, ease: "expo.out" }, "-=.35")
     .add(() => { root.dataset.mode = next; saveMode(); })
@@ -691,7 +692,15 @@ if (!hasGsap) {
   /* ---- Mode switch: new sections appear, so re-measure and replay their scroll reveals ---- */
   onModeChange = () => {
     lenis ? lenis.scrollTo(0, { immediate: true, force: true }) : window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
     ScrollTrigger.refresh();
+    // scroll-linked effects (hero fade, parallax) must land exactly on their top-of-page state
+    const settle = () => ScrollTrigger.getAll().forEach(st => {
+      if (!st.vars.scrub || !st.animation) return;
+      const t = st.getTween && st.getTween(); t && t.progress(1);
+      st.animation.progress(st.progress);
+    });
+    settle(); requestAnimationFrame(settle); gsap.delayedCall(.3, settle);
     ScrollTrigger.getAll().forEach(st => {
       const v = st.vars, a = st.animation;
       if (!a || v.scrub || v.pin || v.containerAnimation) return;
