@@ -284,20 +284,18 @@ if (!hasGsap) {
   const heroChars = $$(".hero__title .split").map(splitChars);
   const contactChars = $$(".contact__big .split").map(splitChars);
   gsap.set(heroChars.flat(), { yPercent: 115, rotate: 6 });
-  gsap.set(".loader__role span", { yPercent: 110 });
 
-  /* ---- Preloader ---- */
+  /* ---- Preloader: the "Code → Cut" motion logo (motion-logo.js) ---- */
   const counter = { v: 0 };
+  const logoTl = window.MotionLogo ? MotionLogo($("#loaderLogo")) : gsap.timeline();
   gsap.timeline()
-    .to(".loader__name span", { yPercent: -110, duration: 1.1, stagger: .06, ease: "expo.out" }, 0)
-    .to(".loader__role span", { yPercent: 0, duration: .9, stagger: .1, ease: "expo.out" }, .35)
-    .to(counter, { v: 100, duration: reduceMotion ? .2 : 1.8, ease: "power2.inOut", onUpdate: () => {
+    .add(logoTl, 0)
+    .to(counter, { v: 100, duration: reduceMotion ? .2 : 2.2, ease: "power2.inOut", onUpdate: () => {
       $("#loaderCount").textContent = String(Math.round(counter.v)).padStart(3, "0");
       $("#loaderBar").style.width = counter.v + "%";
     } }, 0)
-    .to(".loader__name span", { yPercent: -230, duration: .7, stagger: .04, ease: "expo.in" }, "+=.1")
-    .to(".loader__role span", { yPercent: -110, duration: .5, stagger: .05, ease: "expo.in" }, "<")
-    .to(".loader__top, .loader__bottom, .loader__role", { opacity: 0, duration: .3, ease: "power2.out" }, "<") // nothing lingers on the curtain
+    .to("#loaderLogo", { scale: 1.08, opacity: 0, filter: "blur(8px)", duration: .4, ease: "power2.in" }, "+=.3")
+    .to(".loader__top, .loader__bottom", { opacity: 0, duration: .3, ease: "power2.out" }, "<") // nothing lingers on the curtain
     .to(".loader__curtain", { scaleY: 1, duration: .6, ease: "hop" }, "-=.4")
     .to("#loader", { yPercent: -100, duration: 1, ease: "hop" })
     .add(() => { $("#loader").remove(); document.body.classList.remove("is-loading"); lenis && lenis.start(); ScrollTrigger.refresh(); })

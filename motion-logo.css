@@ -1,0 +1,21 @@
+/* "Code → Cut" motion logo (used by the site loader and the video intro page) */
+.ml { --ml-size: clamp(96px, 20vw, 230px); --ml-blue: #5b8cff; --ml-amber: #ffb547; --ml-text: #eef0f6; --ml-muted: #8b90a0;
+  position: relative; display: grid; place-items: center; text-align: center; }
+.ml__code { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); white-space: nowrap; line-height: 1;
+  font: 600 calc(var(--ml-size) * .42) "JetBrains Mono", ui-monospace, monospace; color: var(--ml-text); letter-spacing: .02em; }
+.ml__c--lt, .ml__c--sl, .ml__c--gt { color: var(--ml-blue); display: inline-block; }
+.ml__caret { display: inline-block; width: .55em; height: .1em; margin-left: .05em; background: var(--ml-amber); vertical-align: baseline; animation: mlBlink .8s steps(1) infinite; }
+@keyframes mlBlink { 50% { opacity: 0; } }
+.ml__mark { position: relative; display: inline-block; line-height: .9; font: 800 var(--ml-size) "Bricolage Grotesque", Inter, system-ui, sans-serif; letter-spacing: -.045em; color: var(--ml-text); padding: 0 .06em; }
+.ml__half { display: flex; align-items: baseline; }
+.ml__half--top { position: relative; clip-path: inset(-.2em -.3em 50% -.3em); }
+.ml__half--bot { position: absolute; left: .06em; top: 0; clip-path: inset(50% -.3em -.2em -.3em); }
+.ml__l { display: inline-block; }
+.ml__dot { display: inline-block; width: .2em; height: .2em; margin-left: .05em; border-radius: 50%; background: var(--ml-blue); box-shadow: 0 0 .25em rgba(91, 140, 255, .8); }
+.ml__ring { position: absolute; right: .04em; bottom: .06em; width: .2em; height: .2em; border-radius: 50%; border: .02em solid var(--ml-blue); pointer-events: none; }
+.ml__cut { position: absolute; left: -12%; right: -12%; top: 50%; height: max(4px, .032em); margin-top: -.016em; background: var(--ml-amber); border-radius: 99px;
+  transform-origin: left center; rotate: -9deg; box-shadow: 0 0 .15em var(--ml-amber); }
+.ml__tag { margin-top: calc(var(--ml-size) * .16); font: 600 calc(var(--ml-size) * .1) "JetBrains Mono", ui-monospace, monospace; letter-spacing: .32em; color: var(--ml-muted); white-space: nowrap; }
+.ml__tag span { display: inline-block; }
+.ml__tag .ml__sep { color: var(--ml-amber); }
+@media (max-width: 520px) { .ml__tag { letter-spacing: .18em; font-size: calc(var(--ml-size) * .1); } }

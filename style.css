@@ -718,3 +718,7 @@ html[data-mode="cut"] .swap__b { transform: translateY(0); opacity: 1; }
 .dl-toast.is-on { opacity: 1; transform: translate(-50%, 0); }
 @media (max-width: 760px) { .dl-toast { white-space: normal; width: calc(100% - 32px); text-align: center; bottom: 84px; } }
 .locate__stage { background-size: cover; background-position: center; }
+
+/* loader: motion logo in the middle */
+.loader__logo { flex: 1; display: grid; place-items: center; }
+.loader__logo .ml { --ml-size: clamp(110px, 21vw, 260px); }
