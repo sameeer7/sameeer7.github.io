@@ -207,7 +207,7 @@ function showOut() {
 
 /* ---------------- Mode (Code / Cut) ---------------- */
 const root = document.documentElement;
-try { const saved = localStorage.getItem("ms-mode"); if (saved === "code" || saved === "cut") root.dataset.mode = saved; } catch (e) {}
+// every visit opens in Code mode (the default); only a ?mode=cut or #cut link opens Cut
 { // a shared link like ?mode=cut or #cut opens that side directly
   const q = new URLSearchParams(location.search).get("mode"), h = location.hash.slice(1);
   if (q === "cut" || q === "code") root.dataset.mode = q; else if (h === "cut" || h === "code") root.dataset.mode = h;
